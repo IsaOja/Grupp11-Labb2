@@ -1,8 +1,6 @@
 import dotenv from 'dotenv';
 import { Client } from 'pg';
 
-// const dotenv = require('dotenv'),
-//   { Client } = require('pg');
 dotenv.config();
 
 export async function getClient() {
@@ -13,13 +11,12 @@ export async function getClient() {
   return client;
 }
 
-async function ensureTables() {
+export async function ensureTables() {
   const client = await getClient();
   if (!client) {
-    console.warn("No DATABASE_URL provided; cannot ensure tables");
+    console.warn('No DATABASE_URL provided; cannot ensure tables');
     return;
   }
-  // Create users table if it doesn't exist
   await client.query(`
     CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
@@ -30,5 +27,3 @@ async function ensureTables() {
   `);
   await client.end();
 }
-
-module.exports = { getClient, ensureTables };
