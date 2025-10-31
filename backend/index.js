@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import userRoutes from './src/routes/userRoutes.js';
+import wishlistRoutes from './src/routes/wishlistRoutes.js';
 import { ensureTables } from './db.js';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -10,6 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/users', userRoutes);
+app.use('/api/wishlists', wishlistRoutes);
 
 ensureTables().then(() => {
   const port = process.env.PORT || 3000;
