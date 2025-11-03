@@ -8,12 +8,18 @@ export default function LoginForm({
 }) {
   const [mode, setMode] = useState("login");
   const [username, setUsername] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const resetForm = () => {
     setUsername("");
+    setFirstname("");
+    setLastname("");
+    setEmail("");
     setPassword("");
     setMessage(null);
     setMode("login");
@@ -29,25 +35,33 @@ export default function LoginForm({
     setMessage(null);
     setLoading(true);
     try {
-      const res = await fetch(`${apiBase}/${mode}`, {
+      const endpoint = mode === "register" ? "users" : "users/login";
+      const body =
+        mode === "register"
+          ? { username, firstname, lastname, email, password }
+          : { username, password };
+
+      const res = await fetch(`${apiBase}/${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify(body),
       });
       const data = await res.json();
       if (!res.ok) {
         setMessage(data.error || "Error");
       } else {
         if (mode === "register") {
-          setMessage(`Konto skapat: ${data.user?.username || username}`);
           setMode("login");
+          setUsername("");
+          setFirstname("");
+          setLastname("");
+          setEmail("");
+          setPassword("");
         } else {
-          setMessage(`Inloggad som ${data.user?.username || username}`);
-          console.log("Logged in user:", data.user);
           if (onLogin) onLogin(data.user || { username });
+          setUsername("");
+          setPassword("");
         }
-        setUsername("");
-        setPassword("");
       }
     } catch (err) {
       console.error(err);
@@ -127,11 +141,13 @@ export default function LoginForm({
 
         <form onSubmit={handleSubmit}>
           <label>
-            Användarnamn
+            {mode === "login" ? "Användarnamn eller Email" : "Användarnamn"}
             <input
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+              type="text"
+              autoComplete={mode === "login" ? "username email" : "username"}
               style={{
                 width: "100%",
                 padding: 8,
@@ -141,6 +157,59 @@ export default function LoginForm({
             />
           </label>
 
+          {mode === "register" && (
+            <>
+              <label>
+                Förnamn
+                <input
+                  value={firstname}
+                  onChange={(e) => setFirstname(e.target.value)}
+                  required
+                  autoComplete="given-name"
+                  style={{
+                    width: "100%",
+                    padding: 8,
+                    marginTop: 6,
+                    marginBottom: 12,
+                  }}
+                />
+              </label>
+
+              <label>
+                Efternamn
+                <input
+                  value={lastname}
+                  onChange={(e) => setLastname(e.target.value)}
+                  required
+                  autoComplete="family-name"
+                  style={{
+                    width: "100%",
+                    padding: 8,
+                    marginTop: 6,
+                    marginBottom: 12,
+                  }}
+                />
+              </label>
+
+              <label>
+                Email
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                  style={{
+                    width: "100%",
+                    padding: 8,
+                    marginTop: 6,
+                    marginBottom: 12,
+                  }}
+                />
+              </label>
+            </>
+          )}
+
           <label>
             Lösenord
             <input
@@ -148,6 +217,9 @@ export default function LoginForm({
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              autoComplete={
+                mode === "register" ? "new-password" : "current-password"
+              }
               style={{
                 width: "100%",
                 padding: 8,

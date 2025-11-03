@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-import { Client } from 'pg';
+import dotenv from "dotenv";
+import { Client } from "pg";
 
 dotenv.config();
 
@@ -14,7 +14,7 @@ export async function getClient() {
 export async function ensureTables() {
   const client = await getClient();
   if (!client) {
-    console.warn('No DATABASE_URL provided; cannot ensure tables');
+    console.warn("No DATABASE_URL provided; cannot ensure tables");
     return;
   }
 
@@ -25,7 +25,7 @@ export async function ensureTables() {
       firstname VARCHAR(50),
       lastname VARCHAR(50),
       email VARCHAR(255) UNIQUE,
-      pass_hash TEXT NOT NULL,
+      password_hash TEXT NOT NULL,
       is_admin BOOLEAN DEFAULT FALSE,
       created_at TIMESTAMP DEFAULT NOW()
     );
