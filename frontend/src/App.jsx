@@ -1,16 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import HomeView from "./views/HomeView";
+
 import "./App.css";
 
 function App() {
-  return (
-    <div className="App-root">
-      <header className="App-header">
-        <h1>Önska dig något</h1>
-      </header>
+  const [user, setUser] = useState(null);
 
-      <main></main>
-    </div>
-  );
+  function handleLogin(u) {
+    setUser(u);
+  }
+
+  function handleLogout() {
+    setUser(null);
+  }
+
+  if (user) return <HomeView user={user} onLogout={handleLogout} />;
+
+  return <HomeView onLogin={handleLogin} />;
 }
 
 export default App;
