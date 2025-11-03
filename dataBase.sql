@@ -1,17 +1,17 @@
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   username VARCHAR(100) UNIQUE NOT NULL,
   firstname VARCHAR(50) NOT NULL,
   lastname VARCHAR(50) NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
-  pass_hash VARCHAR(255) NOT NULL, 
+  pass_hash TEXT NOT NULL, 
   is_admin BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
-CREATE TABLE wishlists (
+CREATE TABLE IF NOT EXISTS wishlists (
   id SERIAL PRIMARY KEY,
   user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   list_title VARCHAR(255) NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE wishlists (
 );
 
 
-CREATE TABLE wishlist_items (
+CREATE TABLE IF NOT EXISTS wishlist_items (
   id SERIAL PRIMARY KEY,
   wishlist_id INT NOT NULL REFERENCES wishlists(id) ON DELETE CASCADE,
   item_title VARCHAR(255) NOT NULL,
