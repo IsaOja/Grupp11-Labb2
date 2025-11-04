@@ -1,11 +1,15 @@
-import { getClient } from '../../db.js';
+import { getClient } from "../../db.js";
 
 // Read all public wishlists all users
 export async function getAllPubWishlists() {
   const client = await getClient();
+  // Join with users to include the owner's username so the frontend can display it
   const { rows } = await client.query(`
-    SELECT * from wishlists WHERE is_private = FALSE
-    `);
+    SELECT w.id, w.user_id, w.list_title, w.is_private, w.created_at, u.username
+    FROM wishlists w
+    LEFT JOIN users u ON w.user_id = u.id
+    WHERE w.is_private = FALSE
+  `);
   await client.end();
   return rows;
 }
@@ -37,7 +41,7 @@ export async function getUserPrivateWishlists(id) {
 export async function createWishlist({ user_id, list_title, is_private }) {
   const client = await getClient();
   const q = `INSERT INTO wishlists (user_id, list_title, is_private)
-  VALUES ($1,$2,$3) 
+  VALUES ($1,$2,$3)
   RETURNING id, user_id, list_title, is_private, created_at
   `;
   const { rows } = await client.query(q, [user_id, list_title, is_private]);
@@ -59,7 +63,7 @@ export async function updateWishlist(id, { list_title, is_private }) {
 // Delete wishlist
 export async function deleteWishlist(id) {
   const client = await getClient();
-  const q = `DELETE FROM wishlists WHERE id = $1 
+  const q = `DELETE FROM wishlists WHERE id = $1
     RETURNING id, user_id, list_title, is_private, created_at
   `;
   const { rows } = await client.query(q, [id]);
