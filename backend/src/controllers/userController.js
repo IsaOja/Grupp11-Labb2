@@ -1,5 +1,6 @@
 import * as userService from "../services/userService.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export async function getUsers(req, res) {
   const users = await userService.getAllUsers();
@@ -94,9 +95,31 @@ export async function loginUser(req, res) {
     }
 
     const { password_hash, ...userWithoutPassword } = user;
-    res.json({ user: userWithoutPassword });
+    const JWT_SECRET = process.env.JWT_SECRET || "dev_jwt_secret";
+    const token = jwt.sign(
+      { id: userWithoutPassword.id, username: userWithoutPassword.username },
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.json({ user: userWithoutPassword, token });
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).json({ error: err.message || "Internal server error" });
+  }
+}
+
+export async function me(req, res) {
+  try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ error: "Not authenticated" });
+    }
+    const user = await userService.getUserById(req.user.id);
+    if (!user) return res.status(404).json({ error: "User not found" });
+    const { password_hash, ...userWithoutPassword } = user;
+    res.json({ user: userWithoutPassword });
+  } catch (err) {
+    console.error("/me error:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 }

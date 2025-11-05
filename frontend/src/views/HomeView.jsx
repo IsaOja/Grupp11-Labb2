@@ -1,27 +1,54 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import LoginForm from "../components/LoginForm";
 import "../App.css";
 import "../styles/themes.css";
 
-export default function HomeView({ user, onLogout }) {
+export default function HomeView({ user, onLogout, onLogin }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [theme, setTheme] = useState("dark");
   const [wishlists, setWishlists] = useState([]);
   const [loadingLists, setLoadingLists] = useState(false);
   const [listsError, setListsError] = useState(null);
   const [activeTab, setActiveTab] = useState("latest");
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef(null);
+  const userButtonRef = useRef(null);
+  const [localUser, setLocalUser] = useState(user);
+  useEffect(() => setLocalUser(user), [user]);
 
-  function handleLogin() {
+  function handleLogin(userData, token) {
+    setLocalUser(userData || null);
+    if (onLogin) onLogin(userData, token);
     setIsLoginOpen(false);
   }
 
   function handleLogout() {
+    try {
+      localStorage.removeItem("authToken");
+    } catch (err) {
+      console.warn("Failed to remove auth token:", err);
+    }
+    setLocalUser(null);
     if (onLogout) onLogout();
+    setIsUserMenuOpen(false);
   }
 
+  useEffect(() => {
+    function onDocClick(e) {
+      if (!isUserMenuOpen) return;
+      const menuEl = userMenuRef.current;
+      const btnEl = userButtonRef.current;
+      if (menuEl && menuEl.contains(e.target)) return;
+      if (btnEl && btnEl.contains(e.target)) return;
+      setIsUserMenuOpen(false);
+    }
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, [isUserMenuOpen]);
+
   function toggleTheme() {
-    setTheme(theme === "light" ? "dark" : "light");
+    setTheme((t) => (t === "light" ? "dark" : "light"));
   }
 
   useEffect(() => {
@@ -55,6 +82,8 @@ export default function HomeView({ user, onLogout }) {
   });
   const latestFive = sortedWishlists.slice(0, 5);
   const displayedLists = activeTab === "latest" ? latestFive : sortedWishlists;
+
+  const currentUser = localUser || user;
 
   return (
     <div
@@ -96,6 +125,7 @@ export default function HomeView({ user, onLogout }) {
           >
             Önskelistan
           </h1>
+
           <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
             <button
               onClick={toggleTheme}
@@ -110,26 +140,65 @@ export default function HomeView({ user, onLogout }) {
             >
               {theme === "light" ? "🌙 Dark" : "☀️ Light"}
             </button>
-            {user ? (
+
+            {currentUser ? (
               <div
-                style={{ display: "flex", gap: "1rem", alignItems: "center" }}
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  alignItems: "center",
+                }}
               >
-                <span style={{ color: "#fff" }}>
-                  Välkommen, {user.username}!
-                </span>
                 <button
-                  onClick={handleLogout}
+                  ref={userButtonRef}
+                  onClick={() => setIsUserMenuOpen((s) => !s)}
+                  aria-haspopup="true"
+                  aria-expanded={isUserMenuOpen}
                   style={{
-                    backgroundColor: "var(--primary-dark)",
+                    background: "transparent",
+                    border: "1px solid rgba(255,255,255,0.15)",
                     color: "#fff",
-                    border: "none",
-                    padding: "0.5rem 1rem",
-                    borderRadius: "4px",
+                    padding: "0.5rem 0.75rem",
+                    borderRadius: 6,
                     cursor: "pointer",
                   }}
                 >
-                  Logga ut
+                  {currentUser &&
+                    (currentUser.username || `user:${currentUser.id}`)}
                 </button>
+
+                {isUserMenuOpen && (
+                  <div
+                    ref={userMenuRef}
+                    style={{
+                      position: "absolute",
+                      right: 0,
+                      top: "calc(100% + 8px)",
+                      background: "var(--surface)",
+                      color: "var(--text)",
+                      borderRadius: 8,
+                      boxShadow: "0 6px 18px rgba(0,0,0,0.15)",
+                      padding: "0.5rem",
+                      minWidth: 140,
+                      zIndex: 50,
+                    }}
+                  >
+                    <button
+                      onClick={() => handleLogout()}
+                      style={{
+                        width: "100%",
+                        padding: "0.5rem 0.75rem",
+                        border: "none",
+                        background: "transparent",
+                        textAlign: "left",
+                        cursor: "pointer",
+                        borderRadius: 6,
+                      }}
+                    >
+                      Logga ut
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <button
@@ -169,7 +238,7 @@ export default function HomeView({ user, onLogout }) {
             flex: 1,
           }}
         >
-          {user ? (
+          {currentUser ? (
             <div>
               <h2
                 style={{
@@ -213,6 +282,7 @@ export default function HomeView({ user, onLogout }) {
               </button>
             </div>
           )}
+
           <section style={{ marginTop: "2rem" }}>
             <div
               style={{

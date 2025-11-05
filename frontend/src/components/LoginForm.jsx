@@ -58,7 +58,16 @@ export default function LoginForm({
           setEmail("");
           setPassword("");
         } else {
-          if (onLogin) onLogin(data.user || { username });
+          const token = data.token;
+          try {
+            if (token) {
+              localStorage.setItem("authToken", token);
+            }
+          } catch (e) {
+            console.warn("Could not persist token to localStorage", e);
+          }
+
+          if (onLogin) onLogin(data.user || { username }, token);
           setUsername("");
           setPassword("");
         }
