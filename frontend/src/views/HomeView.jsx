@@ -10,6 +10,9 @@ export default function HomeView({ user, onLogout, onLogin }) {
   const [wishlists, setWishlists] = useState([]);
   const [loadingLists, setLoadingLists] = useState(false);
   const [listsError, setListsError] = useState(null);
+  const [userLists, setUserLists] = useState([]);
+  const [loadingUserLists, setLoadingUserLists] = useState(false);
+  const [userListsError, setUserListsError] = useState(null);
   const [activeTab, setActiveTab] = useState("latest");
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
@@ -75,13 +78,66 @@ export default function HomeView({ user, onLogout, onLogin }) {
     fetchPublicWishlists();
   }, []);
 
+  useEffect(() => {
+    async function fetchUserLists(userId) {
+      setLoadingUserLists(true);
+      setUserListsError(null);
+      try {
+        const token = localStorage.getItem("authToken");
+        const res = await fetch(
+          `http://localhost:3000/api/wishlists/user/${userId}`,
+          {
+            headers: token
+              ? {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json",
+                }
+              : { "Content-Type": "application/json" },
+          }
+        );
+
+        if (res.status === 401 || res.status === 403) {
+          try {
+            localStorage.removeItem("authToken");
+          } catch {
+            console.error("Could not remove invalid auth token");
+          }
+          if (onLogout) onLogout();
+          setUserLists([]);
+          return;
+        }
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+
+        const data = await res.json();
+        setUserLists(data || []);
+      } catch (err) {
+        console.error("Failed to load user's wishlists", err);
+        setUserListsError("Kunde inte ladda dina önskelistor");
+      } finally {
+        setLoadingUserLists(false);
+      }
+    }
+    if (activeTab === "mine") {
+      const uid = (localUser && localUser.id) || (user && user.id);
+      if (uid) fetchUserLists(uid);
+    }
+  }, [activeTab, localUser, user, onLogout]);
+
   const sortedWishlists = [...wishlists].sort((a, b) => {
     const da = a.created_at ? new Date(a.created_at).getTime() : 0;
     const db = b.created_at ? new Date(b.created_at).getTime() : 0;
     return db - da;
   });
   const latestFive = sortedWishlists.slice(0, 5);
-  const displayedLists = activeTab === "latest" ? latestFive : sortedWishlists;
+  const displayedLists =
+    activeTab === "latest"
+      ? latestFive
+      : activeTab === "mine"
+      ? userLists
+      : sortedWishlists;
 
   const currentUser = localUser || user;
 
@@ -329,15 +385,127 @@ export default function HomeView({ user, onLogout, onLogin }) {
               >
                 Alla offentliga
               </button>
+
+              {currentUser && (
+                <button
+                  onClick={() => setActiveTab("mine")}
+                  aria-pressed={activeTab === "mine"}
+                  style={{
+                    padding: "0.5rem 0.75rem",
+                    borderRadius: 6,
+                    border:
+                      activeTab === "mine"
+                        ? "2px solid var(--primary)"
+                        : "1px solid transparent",
+                    background:
+                      activeTab === "mine" ? "var(--primary)" : "transparent",
+                    color: activeTab === "mine" ? "#fff" : "var(--text)",
+                    cursor: "pointer",
+                  }}
+                >
+                  Mina
+                </button>
+              )}
+              {activeTab === "mine" && currentUser && (
+                <button
+                  onClick={() =>
+                    alert("Funktion för att skapa ny lista kommer snart!")
+                  }
+                  style={{
+                    backgroundColor: "var(--primary)",
+                    color: "#fff",
+                    border: "none",
+                    padding: "0.4rem 0.75rem",
+                    borderRadius: 6,
+                    cursor: "pointer",
+                    fontWeight: 600,
+                  }}
+                >
+                  + Ny lista
+                </button>
+              )}
             </div>
-
-            <h3 style={{ color: "var(--primary)", marginBottom: "1rem" }}>
-              {activeTab === "latest"
-                ? "Senaste önskelistor"
-                : "Alla offentliga önskelistor"}
-            </h3>
-
-            {loadingLists ? (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "1rem",
+              }}
+            >
+              <h3 style={{ color: "var(--primary)", margin: 0 }}>
+                {activeTab === "latest"
+                  ? "Senaste önskelistor"
+                  : activeTab === "mine"
+                  ? "Mina önskelistor"
+                  : "Alla offentliga önskelistor"}
+              </h3>
+            </div>
+            {activeTab === "mine" ? (
+              loadingUserLists ? (
+                <p>Hämtar dina önskelistor…</p>
+              ) : userListsError ? (
+                <p style={{ color: "var(--error, #c00)" }}>{userListsError}</p>
+              ) : displayedLists.length === 0 ? (
+                <p style={{ color: "var(--text-light)" }}>
+                  Inga önskelistor hittades.
+                </p>
+              ) : (
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                    gap: "1rem",
+                    marginTop: "0.5rem",
+                  }}
+                >
+                  {displayedLists.map((list) => (
+                    <article
+                      key={list.id}
+                      onClick={() =>
+                        alert("Funktion för att öppna din lista kommer snart!")
+                      }
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        background: "var(--background-elevated, #fff)",
+                        borderRadius: 8,
+                        padding: "1rem",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <h4
+                        style={{ margin: "0 0 0.5rem 0", color: "var(--text)" }}
+                      >
+                        {list.list_title || "Namnlös lista"}
+                      </h4>
+                      <div
+                        style={{
+                          fontSize: "0.9rem",
+                          color: "var(--text-light)",
+                        }}
+                      >
+                        <div>
+                          Ägare:{" "}
+                          {currentUser && currentUser.username
+                            ? currentUser.username
+                            : list.username
+                            ? list.username
+                            : `user_id: ${list.user_id}`}
+                        </div>
+                        <div>
+                          Skapad:{" "}
+                          {list.created_at
+                            ? new Date(list.created_at).toLocaleString()
+                            : "—"}
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              )
+            ) : loadingLists ? (
               <p>Hämtar önskelistor…</p>
             ) : listsError ? (
               <p style={{ color: "var(--error, #c00)" }}>{listsError}</p>
@@ -357,6 +525,9 @@ export default function HomeView({ user, onLogout, onLogin }) {
                 {displayedLists.map((list) => (
                   <article
                     key={list.id}
+                    onClick={() =>
+                      alert("Funktion för att öppna en lista kommer snart!")
+                    }
                     style={{
                       display: "flex",
                       flexDirection: "column",
@@ -364,6 +535,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                       borderRadius: 8,
                       padding: "1rem",
                       boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                      cursor: "pointer",
                     }}
                   >
                     <h4
