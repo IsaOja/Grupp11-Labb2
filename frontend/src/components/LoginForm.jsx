@@ -155,7 +155,7 @@ export default function LoginForm({
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              type="text"
+              type='text'
               autoComplete={mode === "login" ? "username email" : "username"}
               style={{
                 width: "100%",
@@ -174,7 +174,7 @@ export default function LoginForm({
                   value={firstname}
                   onChange={(e) => setFirstname(e.target.value)}
                   required
-                  autoComplete="given-name"
+                  autoComplete='given-name'
                   style={{
                     width: "100%",
                     padding: 8,
@@ -190,7 +190,7 @@ export default function LoginForm({
                   value={lastname}
                   onChange={(e) => setLastname(e.target.value)}
                   required
-                  autoComplete="family-name"
+                  autoComplete='family-name'
                   style={{
                     width: "100%",
                     padding: 8,
@@ -203,11 +203,11 @@ export default function LoginForm({
               <label>
                 Email
                 <input
-                  type="email"
+                  type='email'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  autoComplete="email"
+                  autoComplete='email'
                   style={{
                     width: "100%",
                     padding: 8,
@@ -222,7 +222,7 @@ export default function LoginForm({
           <label>
             Lösenord
             <input
-              type="password"
+              type='password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -239,7 +239,7 @@ export default function LoginForm({
           </label>
 
           <button
-            type="submit"
+            type='submit'
             disabled={loading}
             style={{ width: "100%", padding: 10, justifyContent: "center" }}
           >

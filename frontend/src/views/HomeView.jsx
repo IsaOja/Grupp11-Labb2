@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import LoginForm from "../components/LoginForm";
+import LoginForm from "../components/LoginForm.jsx";
 import "../App.css";
 import "../styles/themes.css";
 
@@ -143,7 +143,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
 
   return (
     <div
-      className="theme-transition"
+      className='theme-transition'
       style={{
         backgroundColor: "var(--background)",
         position: "fixed",
@@ -208,7 +208,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                 <button
                   ref={userButtonRef}
                   onClick={() => setIsUserMenuOpen((s) => !s)}
-                  aria-haspopup="true"
+                  aria-haspopup='true'
                   aria-expanded={isUserMenuOpen}
                   style={{
                     background: "transparent",
