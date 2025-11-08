@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import LoginForm from "../components/LoginForm.jsx";
+import ListDetails from "../components/ListDetails.jsx";
 import "../App.css";
 import "../styles/themes.css";
 
@@ -18,6 +19,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
   const userMenuRef = useRef(null);
   const userButtonRef = useRef(null);
   const [localUser, setLocalUser] = useState(user);
+  const [selectedList, setSelectedList] = useState(null);
   useEffect(() => setLocalUser(user), [user]);
 
   function handleLogin(userData, token) {
@@ -143,7 +145,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
 
   return (
     <div
-      className='theme-transition'
+      className="theme-transition"
       style={{
         backgroundColor: "var(--background)",
         position: "fixed",
@@ -208,7 +210,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                 <button
                   ref={userButtonRef}
                   onClick={() => setIsUserMenuOpen((s) => !s)}
-                  aria-haspopup='true'
+                  aria-haspopup="true"
                   aria-expanded={isUserMenuOpen}
                   style={{
                     background: "transparent",
@@ -462,9 +464,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                   {displayedLists.map((list) => (
                     <article
                       key={list.id}
-                      onClick={() =>
-                        alert("Funktion för att öppna din lista kommer snart!")
-                      }
+                      onClick={() => setSelectedList(list)}
                       style={{
                         display: "flex",
                         flexDirection: "column",
@@ -525,9 +525,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                 {displayedLists.map((list) => (
                   <article
                     key={list.id}
-                    onClick={() =>
-                      alert("Funktion för att öppna en lista kommer snart!")
-                    }
+                    onClick={() => setSelectedList(list)}
                     style={{
                       display: "flex",
                       flexDirection: "column",
@@ -571,6 +569,12 @@ export default function HomeView({ user, onLogout, onLogin }) {
         isOpen={isLoginOpen}
         onClose={() => setIsLoginOpen(false)}
         onLogin={handleLogin}
+      />
+
+      <ListDetails
+        list={selectedList}
+        isOpen={selectedList !== null}
+        onClose={() => setSelectedList(null)}
       />
     </div>
   );
