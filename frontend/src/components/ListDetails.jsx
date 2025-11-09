@@ -156,8 +156,8 @@ export default function ListDetails({ list, isOpen, onClose }) {
                 {item.product_link && (
                   <a
                     href={item.product_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target='_blank'
+                    rel='noopener noreferrer'
                     style={{
                       color: "var(--primary)",
                       textDecoration: "none",
