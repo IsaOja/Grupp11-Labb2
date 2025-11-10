@@ -1,13 +1,14 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import LoginForm from "../components/LoginForm.jsx";
+import { useTheme } from "../context/ThemContext.jsx";
 import ListDetails from "../components/ListDetails.jsx";
 import "../App.css";
 import "../styles/themes.css";
 
 export default function HomeView({ user, onLogout, onLogin }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [theme, setTheme] = useState("dark");
+  const { theme, toggleTheme } = useTheme();
   const [wishlists, setWishlists] = useState([]);
   const [loadingLists, setLoadingLists] = useState(false);
   const [listsError, setListsError] = useState(null);
@@ -51,14 +52,6 @@ export default function HomeView({ user, onLogout, onLogin }) {
     document.addEventListener("mousedown", onDocClick);
     return () => document.removeEventListener("mousedown", onDocClick);
   }, [isUserMenuOpen]);
-
-  function toggleTheme() {
-    setTheme((t) => (t === "light" ? "dark" : "light"));
-  }
-
-  useEffect(() => {
-    document.body.setAttribute("data-theme", theme);
-  }, [theme]);
 
   useEffect(() => {
     async function fetchPublicWishlists() {
