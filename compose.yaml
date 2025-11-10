@@ -1,0 +1,31 @@
+services:
+  backend:
+    build: backend
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgres://postgres:secret@database/postgres
+      - PORT=3000
+      - JWT_SECRET=dev_secret
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build: frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+
+  database:
+    image: postgres
+    environment:
+      - DB_PASSWORD=secret
+    ports:
+      - "5432:5432"
+    healthcheck:
+      interval: 1s
+      test: "pg_isready --username=postgres"
+    volumes:
+      - ./data:/var/lib/postgresql
