@@ -8,6 +8,6 @@ export default defineConfig({
     proxy: {
       "/api": "http://localhost:3000",
     },
-    allowedHosts: "all",
+    allowedHosts: ["express.ebros.se", "localhost", "127.0.0.1"],
   },
 });
