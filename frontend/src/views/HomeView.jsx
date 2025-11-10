@@ -143,6 +143,76 @@ export default function HomeView({ user, onLogout, onLogin }) {
 
   const currentUser = localUser || user;
 
+  const handleWishlistCreated = (created) => {
+    const withUsername = {
+      ...created,
+      username:
+        created.username ||
+        (currentUser && currentUser.id === created.user_id
+          ? currentUser.username
+          : created.username),
+    };
+    if (activeTab === "mine") {
+      setUserLists((s) => [withUsername, ...(s || [])]);
+    }
+    if (!withUsername.is_private) {
+      setWishlists((s) => [withUsername, ...(s || [])]);
+    }
+    setSelectedList(withUsername);
+  };
+
+  const handleWishlistDeleted = (deletedId) => {
+    setUserLists((s) => (s ? s.filter((l) => l.id !== deletedId) : []));
+    setWishlists((s) => (s ? s.filter((l) => l.id !== deletedId) : []));
+    if (selectedList && selectedList.id === deletedId) setSelectedList(null);
+  };
+
+  const handleWishlistUpdated = (updated) => {
+    setUserLists((s) =>
+      s
+        ? s.map((l) =>
+            l.id === updated.id
+              ? { ...l, ...updated, username: updated.username || l.username }
+              : l
+          )
+        : s
+    );
+
+    setWishlists((s) => {
+      if (!s) return s;
+      const exists = s.some((l) => l.id === updated.id);
+      if (updated.is_private) {
+        return s.filter((l) => l.id !== updated.id);
+      }
+      if (exists) {
+        return s.map((l) =>
+          l.id === updated.id
+            ? { ...l, ...updated, username: updated.username || l.username }
+            : l
+        );
+      }
+      return [
+        {
+          ...updated,
+          username:
+            updated.username ||
+            (currentUser && currentUser.id === updated.user_id
+              ? currentUser.username
+              : undefined),
+        },
+        ...s,
+      ];
+    });
+
+    if (selectedList && selectedList.id === updated.id) {
+      setSelectedList((prev) => ({
+        ...prev,
+        ...updated,
+        username: updated.username || prev.username,
+      }));
+    }
+  };
+
   return (
     <div
       className="theme-transition"
@@ -410,9 +480,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
               )}
               {activeTab === "mine" && currentUser && (
                 <button
-                  onClick={() =>
-                    alert("Funktion för att skapa ny lista kommer snart!")
-                  }
+                  onClick={() => setSelectedList(undefined)}
                   style={{
                     backgroundColor: "var(--primary)",
                     color: "#fff",
@@ -492,7 +560,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                             ? currentUser.username
                             : list.username
                             ? list.username
-                            : `user_id: ${list.user_id}`}
+                            : "Inget användarnamn hittades"}
                         </div>
                         <div>
                           Skapad:{" "}
@@ -548,7 +616,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                         Ägare:{" "}
                         {list.username
                           ? list.username
-                          : `user_id: ${list.user_id}`}
+                          : "Inget användarnamn hittades"}
                       </div>
                       <div>
                         Skapad:{" "}
@@ -575,6 +643,9 @@ export default function HomeView({ user, onLogout, onLogin }) {
         list={selectedList}
         isOpen={selectedList !== null}
         onClose={() => setSelectedList(null)}
+        onCreated={handleWishlistCreated}
+        onDeleted={handleWishlistDeleted}
+        onUpdated={handleWishlistUpdated}
       />
     </div>
   );
