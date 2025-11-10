@@ -4,12 +4,14 @@ export default function CreateWishlistModal({ user, onClose, onCreated }) {
   const [title, setTitle] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
 
+  const API_BASE = import.meta.env.VITE_API_URL || "";
+
   async function handleSubmit(e) {
     e.preventDefault();
     const token = localStorage.getItem("authToken");
     if (!token || !user) return;
 
-    const res = await fetch(`http://localhost:3000/api/wishlists/${user.id}`, {
+    const res = await fetch(`${API_BASE}/api/wishlists/${user.id}`, {
       method: "POST",
       headers: {
         "content-Type": "application/json",
@@ -32,7 +34,7 @@ export default function CreateWishlistModal({ user, onClose, onCreated }) {
         <h3>Create Wishlist</h3>
         <form onSubmit={handleSubmit}>
           <input
-            placeholder='List title'
+            placeholder="List title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
@@ -41,14 +43,14 @@ export default function CreateWishlistModal({ user, onClose, onCreated }) {
 
           <label style={{ display: "flex", gap: 6 }}>
             <input
-              type='checkbox'
+              type="checkbox"
               checked={isPrivate}
               onChange={(e) => setIsPrivate(e.target.checked)}
             />
             Private
           </label>
 
-          <button type='submit' style={{ width: "100%", marginTop: 12 }}>
+          <button type="submit" style={{ width: "100%", marginTop: 12 }}>
             Create
           </button>
         </form>

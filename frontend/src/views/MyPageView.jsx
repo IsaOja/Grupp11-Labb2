@@ -1,5 +1,7 @@
 import { useTheme } from "../context/ThemContext.jsx";
 import { useEffect, useState } from "react";
+
+const API_BASE = import.meta.env.VITE_API_URL || "";
 import CreateWishlistModal from "../components/CreateWishlistModal.jsx";
 import { Moon, Sun, Plus, Lock, Globe } from "lucide-react";
 
@@ -15,7 +17,7 @@ export default function MyPage() {
     if (!token) return;
 
     async function getExistingUser() {
-      const res = await fetch("http://localhost:3000/api/users/me", {
+      const res = await fetch(`${API_BASE}/api/users/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -29,9 +31,7 @@ export default function MyPage() {
     if (!user) return;
 
     async function getLists() {
-      const res = await fetch(
-        `http://localhost:3000/api/wishlists/user/${user.id}`
-      );
+      const res = await fetch(`${API_BASE}/api/wishlists/user/${user.id}`);
       const data = await res.json();
       setLists(data);
     }
@@ -49,11 +49,11 @@ export default function MyPage() {
       ? publicLists
       : lists;
   return (
-    <div className='page-container'>
-      <div className='container'>
-        <header className='header'>
+    <div className="page-container">
+      <div className="container">
+        <header className="header">
           <h1>My Wishlists</h1>
-          <button className='theme-toggle' onClick={toggleTheme}>
+          <button className="theme-toggle" onClick={toggleTheme}>
             {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
             <span>{theme === "dark" ? "Light" : "Dark"}</span>
           </button>
@@ -61,15 +61,15 @@ export default function MyPage() {
 
         {user ? (
           <>
-            <div className='user-section'>
-              <div className='user-info'>
-                <div className='user-name'>
+            <div className="user-section">
+              <div className="user-info">
+                <div className="user-name">
                   {user.firstname} {user.lastname}
                 </div>
-                <div className='user-email'>{user.email}</div>
+                <div className="user-email">{user.email}</div>
               </div>
               <button
-                className='btn-primary'
+                className="btn-primary"
                 onClick={() => setShowCreate(true)}
               >
                 <Plus size={20} />
@@ -85,9 +85,9 @@ export default function MyPage() {
               />
             )}
 
-            <div className='filter-section'>
-              <span className='filter-label'>Filter lists</span>
-              <div className='filter-buttons'>
+            <div className="filter-section">
+              <span className="filter-label">Filter lists</span>
+              <div className="filter-buttons">
                 <button
                   className={`filter-btn ${filter === "all" ? "active" : ""}`}
                   onClick={() => setFilter("all")}
@@ -113,19 +113,19 @@ export default function MyPage() {
               </div>
             </div>
 
-            <h2 className='lists-header'>Your Lists</h2>
+            <h2 className="lists-header">Your Lists</h2>
 
-            <div className='list-grid'>
+            <div className="list-grid">
               {filteredLists.length === 0 ? (
-                <div className='empty-state'>
-                  <div className='empty-state-icon'>📋</div>
+                <div className="empty-state">
+                  <div className="empty-state-icon">📋</div>
                   <p>No lists found</p>
                 </div>
               ) : (
                 filteredLists.map((l) => (
-                  <div className='list-card' key={l.id}>
-                    <div className='list-card-header'>
-                      <h4 className='list-title'>{l.list_title}</h4>
+                  <div className="list-card" key={l.id}>
+                    <div className="list-card-header">
+                      <h4 className="list-title">{l.list_title}</h4>
                       <p>
                         Created: {new Date(l.created_at).toLocaleDateString()}
                       </p>
@@ -145,7 +145,7 @@ export default function MyPage() {
             </div>
           </>
         ) : (
-          <div className='empty-state'>
+          <div className="empty-state">
             <h3 style={{ color: "var(--error)" }}>You need to log in</h3>
           </div>
         )}

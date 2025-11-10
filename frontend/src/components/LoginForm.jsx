@@ -1,11 +1,13 @@
 import { useState } from "react";
 
 export default function LoginForm({
-  apiBase = "http://localhost:3000/api",
+  apiBase,
   onLogin,
   isOpen = false,
   onClose,
 }) {
+  const API_BASE = import.meta.env.VITE_API_URL || "";
+  apiBase = apiBase || `${API_BASE}/api`;
   const [mode, setMode] = useState("login");
   const [username, setUsername] = useState("");
   const [firstname, setFirstname] = useState("");

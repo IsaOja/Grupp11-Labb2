@@ -19,6 +19,7 @@ services:
       - "5173:5173"
     environment:
       - VITE_HOST=0.0.0.0
+      - VITE_API_URL=http://backend:3000
 
   database:
     image: postgres

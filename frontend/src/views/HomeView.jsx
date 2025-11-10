@@ -1,5 +1,7 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
+
+const API_BASE = import.meta.env.VITE_API_URL || "";
 import LoginForm from "../components/LoginForm.jsx";
 import { useTheme } from "../context/ThemContext.jsx";
 import ListDetails from "../components/ListDetails.jsx";
@@ -58,7 +60,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
       setLoadingLists(true);
       setListsError(null);
       try {
-        const res = await fetch("http://localhost:3000/api/wishlists/public");
+        const res = await fetch(`${API_BASE}/api/wishlists/public`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         setWishlists(data || []);
@@ -79,17 +81,14 @@ export default function HomeView({ user, onLogout, onLogin }) {
       setUserListsError(null);
       try {
         const token = localStorage.getItem("authToken");
-        const res = await fetch(
-          `http://localhost:3000/api/wishlists/user/${userId}`,
-          {
-            headers: token
-              ? {
-                  Authorization: `Bearer ${token}`,
-                  "Content-Type": "application/json",
-                }
-              : { "Content-Type": "application/json" },
-          }
-        );
+        const res = await fetch(`${API_BASE}/api/wishlists/user/${userId}`, {
+          headers: token
+            ? {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              }
+            : { "Content-Type": "application/json" },
+        });
 
         if (res.status === 401 || res.status === 403) {
           try {
@@ -208,7 +207,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
 
   return (
     <div
-      className='theme-transition'
+      className="theme-transition"
       style={{
         backgroundColor: "var(--background)",
         position: "fixed",
@@ -273,7 +272,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                 <button
                   ref={userButtonRef}
                   onClick={() => setIsUserMenuOpen((s) => !s)}
-                  aria-haspopup='true'
+                  aria-haspopup="true"
                   aria-expanded={isUserMenuOpen}
                   style={{
                     background: "transparent",
