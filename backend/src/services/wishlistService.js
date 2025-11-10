@@ -5,10 +5,13 @@ export async function getAllPubWishlists() {
   const client = await getClient();
   // Join with users to include the owner's username so the frontend can display it
   const { rows } = await client.query(`
-    SELECT w.id, w.user_id, w.list_title, w.is_private, w.created_at, u.username
+     SELECT w.id, w.user_id, w.list_title, w.is_private, w.created_at, u.username,
+    COUNT(i.id) AS items_count
     FROM wishlists w
     LEFT JOIN users u ON w.user_id = u.id
+    LEFT JOIN wishlist_items i ON w.id = i.wishlist_id
     WHERE w.is_private = FALSE
+    GROUP BY w.id, u.username
   `);
   await client.end();
   return rows;
@@ -18,8 +21,12 @@ export async function getAllPubWishlists() {
 export async function getUserPubWishlists(id) {
   const client = await getClient();
   const q = `
-    SELECT * FROM wishlists
-    WHERE is_private = false AND user_id = $1
+     SELECT w.id, w.user_id, w.list_title, w.is_private, w.created_at,
+    COUNT(i.id) AS items_count
+    FROM wishlists w
+    LEFT JOIN wishlist_items i ON w.id = i.wishlist_id
+    WHERE w.is_private = FALSE AND w.user_id = $1
+    GROUP BY w.id
   `;
   const { rows } = await client.query(q, [id]);
   await client.end();
@@ -29,8 +36,12 @@ export async function getUserPubWishlists(id) {
 export async function getUserPrivateWishlists(id) {
   const client = await getClient();
   const q = `
-    SELECT * FROM wishlists
-    WHERE is_private = true AND user_id = $1
+     SELECT w.id, w.user_id, w.list_title, w.is_private, w.created_at,
+    COUNT(i.id) AS items_count
+    FROM wishlists w
+    LEFT JOIN wishlist_items i ON w.id = i.wishlist_id
+    WHERE w.is_private = TRUE AND w.user_id = $1
+    GROUP BY w.id
   `;
   const { rows } = await client.query(q, [id]);
   await client.end();

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 const API_BASE = import.meta.env.VITE_API_URL || "";
 import CreateWishlistModal from "../components/CreateWishlistModal.jsx";
 import { Moon, Sun, Plus, Lock, Globe } from "lucide-react";
+import ManageList from "../components/ManageList.jsx";
 
 export default function MyPage() {
   const [user, setUser] = useState(null);
@@ -11,6 +12,7 @@ export default function MyPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [filter, setFilter] = useState("all");
   const { theme, toggleTheme } = useTheme();
+  const [selectedList, setSelectedList] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -123,13 +125,23 @@ export default function MyPage() {
                 </div>
               ) : (
                 filteredLists.map((l) => (
-                  <div className="list-card" key={l.id}>
+                  <div
+                    className="list-card"
+                    key={l.id}
+                    onClick={() => setSelectedList(l)}
+                  >
                     <div className="list-card-header">
                       <h4 className="list-title">{l.list_title}</h4>
                       <p>
                         Created: {new Date(l.created_at).toLocaleDateString()}
                       </p>
-                      <p> Items: {l.items?.length || 0}</p>
+                      <p>
+                        {l.items_count > 0 ? (
+                          <>Items: {l.items_count}</>
+                        ) : (
+                          <>Inga items</>
+                        )}
+                      </p>
                     </div>
                     <div
                       className={`privacy-badge ${
@@ -141,6 +153,20 @@ export default function MyPage() {
                     </div>
                   </div>
                 ))
+              )}
+              {selectedList && (
+                <ManageList
+                  list={selectedList}
+                  onUpdated={(updated) =>
+                    setLists((prev) =>
+                      prev.map((l) => (l.id === updated.id ? updated : l))
+                    )
+                  }
+                  onDelete={(id) =>
+                    setLists((prev) => prev.filter((l) => l.id !== id))
+                  }
+                  onClose={() => setSelectedList(null)}
+                />
               )}
             </div>
           </>
