@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
       proxy: {
         "/api": proxyTarget,
       },
-      allowedHosts: ["express.ebros.se", "localhost", "127.0.0.1"],
+      allowedHosts: ["labb2.ebros.se", "localhost", "127.0.0.1"],
     },
   };
 });
