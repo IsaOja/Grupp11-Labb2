@@ -9,9 +9,11 @@ function App() {
   const { user, login, logout } = useAuth();
 
   return (
-    <BrowserRouter>
-      <Router user={user} onLogout={logout} onLogin={login} />
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        <Router user={user} onLogout={logout} onLogin={login} />
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
