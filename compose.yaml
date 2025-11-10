@@ -17,6 +17,8 @@ services:
       - backend
     ports:
       - "5173:5173"
+    environment:
+      - VITE_HOST=0.0.0.0
 
   database:
     image: postgres
