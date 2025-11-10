@@ -1,8 +1,10 @@
 /* MyPageView.css */
+body {
+  background-color: var(--background);
+}
 
 .page-container {
   min-height: 100vh;
-  background-color: var(--background);
   color: var(--text);
   padding: 2rem 1rem;
 }

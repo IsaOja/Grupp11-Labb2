@@ -1,18 +1,19 @@
-import express from 'express';
+import express from "express";
 import {
   getItems,
   getItemsByUser,
   createItem,
   updateItem,
   deleteItem,
-} from '../controllers/itemController.js';
+} from "../controllers/itemController.js";
+import requireAuth from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get('/wishlist/:wishlist_id', getItems);
-router.get('/user/:user_id', getItemsByUser);
-router.post('/:wishlist_id', createItem);
-router.put('/:id', updateItem);
-router.delete('/:id', deleteItem);
+router.get("/wishlist/:wishlist_id", getItems);
+router.get("/user/:user_id", requireAuth, getItemsByUser);
+router.post("/:wishlist_id", requireAuth, createItem);
+router.put("/:id", requireAuth, updateItem);
+router.delete("/:id", requireAuth, deleteItem);
 
 export default router;
