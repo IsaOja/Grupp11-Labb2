@@ -1,18 +1,24 @@
 import { useTheme } from "../context/ThemContext.jsx";
 import { useEffect, useState } from "react";
+import { useAuth } from "../context/useAuth.jsx";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE = import.meta.env.VITE_API_URL || "";
 import CreateWishlistModal from "../components/CreateWishlistModal.jsx";
-import { Moon, Sun, Plus, Lock, Globe } from "lucide-react";
+import EditUser from "../components/EditUser.jsx";
+import { Moon, Sun, Plus, Lock, Globe, Edit } from "lucide-react";
 import ManageList from "../components/ManageList.jsx";
 
 export default function MyPage() {
   const [user, setUser] = useState(null);
   const [lists, setLists] = useState([]);
   const [showCreate, setShowCreate] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
   const [filter, setFilter] = useState("all");
   const { theme, toggleTheme } = useTheme();
+  const { logout } = useAuth();
   const [selectedList, setSelectedList] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -72,12 +78,34 @@ export default function MyPage() {
               </div>
               <button
                 className="btn-primary"
+                onClick={() => setShowEditProfile(true)}
+              >
+                <Edit size={20} /> Edit Profile
+              </button>
+              <button
+                className="btn-primary"
                 onClick={() => setShowCreate(true)}
               >
                 <Plus size={20} />
                 Create List
               </button>
             </div>
+
+            {showEditProfile && (
+              <EditUser
+                isOpen={showEditProfile}
+                onUpdated={(updatedUser) => {
+                  setUser(updatedUser);
+                  setShowEditProfile(false);
+                }}
+                onClose={() => setShowEditProfile(false)}
+                onDeleted={() => {
+                  setShowEditProfile(false);
+                  logout();
+                  navigate("/");
+                }}
+              />
+            )}
 
             {showCreate && (
               <CreateWishlistModal

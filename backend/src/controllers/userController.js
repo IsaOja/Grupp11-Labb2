@@ -37,23 +37,23 @@ export async function addUser(req, res) {
 
 export async function updateUser(req, res) {
   const { id } = req.params;
-  const { firstname, lastname, email, password } = req.body;
-  const password_hash = password ? await bcrypt.hash(password, 10) : null;
+  const { password, ...updateData } = req.body;
+
+  if (password) {
+    updateData.password_hash = await bcrypt.hash(password, 10);
+  }
+
   try {
-    const updated = await userService.updateUser(id, {
-      firstname,
-      lastname,
-      email,
-      password_hash,
-    });
-    if (!updated) {
+    const updatedUser = await userService.updateUser(id, updateData);
+    if (!updatedUser) {
       return res
         .status(404)
         .json({ error: `Sorry couldn't update, please try again.` });
     }
-    res.json(updated);
+    res.json(updatedUser);
   } catch (err) {
-    res.status(500).json({ error: "failed to update" });
+    console.error("updateUser error:", err);
+    res.status(500).json({ error: "Failed to update user" });
   }
 }
 

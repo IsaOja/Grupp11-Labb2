@@ -60,24 +60,26 @@ export async function createUser({
   return rows[0];
 }
 
-export async function updateUser(
-  id,
-  { firstname, lastname, email, password_hash }
-) {
+export async function updateUser(id, updateData) {
   const client = await getClient();
+  const fields = Object.keys(updateData);
+  if (fields.length === 0) {
+    return getUserById(id);
+  }
+
+  const setClauses = fields
+    .map((field, index) => `"${field}" = $${index + 1}`)
+    .join(", ");
+  const values = Object.values(updateData);
 
   const q = `
     UPDATE users
-    SET firstname = $1,
-        lastname = $2,
-        email = $3,
-        password_hash = $4
-    WHERE id = $5
+    SET ${setClauses}
+    WHERE id = $${fields.length + 1}
     RETURNING id, username, firstname, lastname, email, is_admin, created_at
   `;
 
-  const values = [firstname, lastname, email, password_hash, id];
-  const { rows } = await client.query(q, values);
+  const { rows } = await client.query(q, [...values, id]);
 
   await client.end();
   return rows[0];
