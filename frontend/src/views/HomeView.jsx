@@ -1,5 +1,8 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+
+const API_BASE = import.meta.env.VITE_API_URL || "";
 import LoginForm from "../components/LoginForm.jsx";
 import { useTheme } from "../context/ThemContext.jsx";
 import ListDetails from "../components/ListDetails.jsx";
@@ -208,7 +211,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
 
   return (
     <div
-      className='theme-transition'
+      className="theme-transition"
       style={{
         backgroundColor: "var(--background)",
         position: "fixed",
@@ -273,7 +276,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                 <button
                   ref={userButtonRef}
                   onClick={() => setIsUserMenuOpen((s) => !s)}
-                  aria-haspopup='true'
+                  aria-haspopup="true"
                   aria-expanded={isUserMenuOpen}
                   style={{
                     background: "transparent",
@@ -304,6 +307,24 @@ export default function HomeView({ user, onLogout, onLogin }) {
                       zIndex: 50,
                     }}
                   >
+                    <Link
+                      to="/me"
+                      style={{
+                        width: "100%",
+                        padding: "0.5rem 0.75rem",
+                        border: "none",
+                        background: "transparent",
+                        textAlign: "left",
+                        cursor: "pointer",
+                        borderRadius: 6,
+                        textDecoration: "none",
+                        color: "var(--text)",
+                        display: "block",
+                        fontSize: "inherit",
+                      }}
+                    >
+                      Min Profil
+                    </Link>
                     <button
                       onClick={() => handleLogout()}
                       style={{
@@ -314,6 +335,8 @@ export default function HomeView({ user, onLogout, onLogin }) {
                         textAlign: "left",
                         cursor: "pointer",
                         borderRadius: 6,
+                        fontSize: "inherit",
+                        color: "var(--text)",
                       }}
                     >
                       Logga ut
