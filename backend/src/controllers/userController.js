@@ -14,8 +14,10 @@ export async function getUser(req, res) {
 }
 
 export async function addUser(req, res) {
-  const { username, firstname, lastname, email, password } = req.body;
-  if (!username || !firstname || !lastname || !email || !password) {
+  // const { username, firstname, lastname, email, password } = req.body;
+  // if (!username || !firstname || !lastname || !email || !password) {
+  const { username, email, password } = req.body;
+  if (!username || !email || !password) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
@@ -23,8 +25,8 @@ export async function addUser(req, res) {
     const password_hash = await bcrypt.hash(password, 10);
     const user = await userService.createUser({
       username,
-      firstname,
-      lastname,
+      // firstname,
+      // lastname,
       email,
       password_hash,
     });

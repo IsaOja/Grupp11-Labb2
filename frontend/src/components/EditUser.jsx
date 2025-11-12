@@ -5,8 +5,9 @@ const API_BASE = import.meta.env.VITE_API_URL || "";
 
 export default function EditUser({ isOpen, onClose, onUpdated, onDeleted }) {
   const { user } = useAuth();
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
+  //   const [firstname, setFirstname] = useState("");
+  //   const [lastname, setLastname] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -15,8 +16,9 @@ export default function EditUser({ isOpen, onClose, onUpdated, onDeleted }) {
 
   useEffect(() => {
     if (isOpen && user) {
-      setFirstname(user.firstname || "");
-      setLastname(user.lastname || "");
+      //   setFirstname(user.firstname || "");
+      //   setLastname(user.lastname || "");
+      setUsername(user.username || "");
       setEmail(user.email || "");
       setPassword("");
       setError(null);
@@ -30,8 +32,9 @@ export default function EditUser({ isOpen, onClose, onUpdated, onDeleted }) {
     setSaving(true);
     try {
       const body = {
-        firstname,
-        lastname,
+        // firstname,
+        // lastname,
+        username,
         email,
       };
       if (password) {
@@ -139,7 +142,7 @@ export default function EditUser({ isOpen, onClose, onUpdated, onDeleted }) {
         </h2>
 
         <form onSubmit={handleSubmit}>
-          <label style={{ display: "block", marginBottom: "1rem" }}>
+          {/* <label style={{ display: "block", marginBottom: "1rem" }}>
             <span style={{ color: "var(--text)", fontSize: "0.9rem" }}>
               Förnamn
             </span>
@@ -161,9 +164,9 @@ export default function EditUser({ isOpen, onClose, onUpdated, onDeleted }) {
                 boxSizing: "border-box",
               }}
             />
-          </label>
+          </label> */}
 
-          <label style={{ display: "block", marginBottom: "1rem" }}>
+          {/* <label style={{ display: "block", marginBottom: "1rem" }}>
             <span style={{ color: "var(--text)", fontSize: "0.9rem" }}>
               Efternamn
             </span>
@@ -173,6 +176,30 @@ export default function EditUser({ isOpen, onClose, onUpdated, onDeleted }) {
               onChange={(e) => setLastname(e.target.value)}
               placeholder="Efternamn"
               autoComplete="family-name"
+              required
+              style={{
+                width: "100%",
+                padding: "0.5rem",
+                marginTop: "0.4rem",
+                border: "1px solid var(--border)",
+                borderRadius: "4px",
+                background: "var(--background)",
+                color: "var(--text)",
+                boxSizing: "border-box",
+              }}
+            />
+          </label> */}
+
+          <label style={{ display: "block", marginBottom: "1rem" }}>
+            <span style={{ color: "var(--text)", fontSize: "0.9rem" }}>
+              Användarnamn
+            </span>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Användarnamn"
+              autoComplete="username"
               required
               style={{
                 width: "100%",
