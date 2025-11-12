@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function LoginForm({
   apiBase,
@@ -16,6 +17,7 @@ export default function LoginForm({
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [policyAgree, setPolicyAgree] = useState(false);
 
   const resetForm = () => {
     setUsername("");
@@ -158,7 +160,7 @@ export default function LoginForm({
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              type="text"
+              type='text'
               autoComplete={mode === "login" ? "username email" : "username"}
               style={{
                 width: "100%",
@@ -206,11 +208,11 @@ export default function LoginForm({
               <label>
                 Email
                 <input
-                  type="email"
+                  type='email'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  autoComplete="email"
+                  autoComplete='email'
                   style={{
                     width: "100%",
                     padding: 8,
@@ -225,7 +227,7 @@ export default function LoginForm({
           <label>
             Lösenord
             <input
-              type="password"
+              type='password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -241,9 +243,26 @@ export default function LoginForm({
             />
           </label>
 
+          {mode === "register" && (
+            <label>
+              <p>
+                Vi sparar ditt användarnamn och din e-postadress för att kunna
+                hantera ditt konto och dina önskelistor. läs vår{" "}
+                <Link to='/policy'>integritetspolicy</Link> för mer information
+              </p>
+              <input
+                type='checkbox'
+                checked={policyAgree}
+                onChange={() => setPolicyAgree(!policyAgree)}
+                style={{ marginBottom: "1rem" }}
+              />
+              Jag godkänner integritetspolicy.
+            </label>
+          )}
+
           <button
-            type="submit"
-            disabled={loading}
+            type='submit'
+            disabled={!policyAgree}
             style={{ width: "100%", padding: 10, justifyContent: "center" }}
           >
             {loading
