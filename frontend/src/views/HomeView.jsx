@@ -208,7 +208,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
 
   return (
     <div
-      className="theme-transition"
+      className='theme-transition'
       style={{
         backgroundColor: "var(--background)",
         position: "fixed",
@@ -273,7 +273,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                 <button
                   ref={userButtonRef}
                   onClick={() => setIsUserMenuOpen((s) => !s)}
-                  aria-haspopup="true"
+                  aria-haspopup='true'
                   aria-expanded={isUserMenuOpen}
                   style={{
                     background: "transparent",
@@ -305,7 +305,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                     }}
                   >
                     <Link
-                      to="/me"
+                      to='/me'
                       style={{
                         width: "100%",
                         padding: "0.5rem 0.75rem",
@@ -557,7 +557,10 @@ export default function HomeView({ user, onLogout, onLogin }) {
                       }}
                     >
                       <h4
-                        style={{ margin: "0 0 0.5rem 0", color: "var(--text)" }}
+                        style={{
+                          margin: "0 0 0.5rem 0",
+                          color: "var(--text)",
+                        }}
                       >
                         {list.list_title || "Namnlös lista"}
                       </h4>
@@ -623,7 +626,10 @@ export default function HomeView({ user, onLogout, onLogin }) {
                       {list.list_title || "Namnlös lista"}
                     </h4>
                     <div
-                      style={{ fontSize: "0.9rem", color: "var(--text-light)" }}
+                      style={{
+                        fontSize: "0.9rem",
+                        color: "var(--text-light)",
+                      }}
                     >
                       <div>
                         Ägare:{" "}

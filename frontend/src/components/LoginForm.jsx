@@ -262,7 +262,7 @@ export default function LoginForm({
 
           <button
             type='submit'
-            disabled={!policyAgree}
+            disabled={loading || (mode === "register" && !policyAgree)}
             style={{ width: "100%", padding: 10, justifyContent: "center" }}
           >
             {loading
