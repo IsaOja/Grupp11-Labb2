@@ -211,7 +211,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
 
   return (
     <div
-      className="theme-transition"
+      className='theme-transition'
       style={{
         backgroundColor: "var(--background)",
         position: "fixed",
@@ -276,7 +276,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                 <button
                   ref={userButtonRef}
                   onClick={() => setIsUserMenuOpen((s) => !s)}
-                  aria-haspopup="true"
+                  aria-haspopup='true'
                   aria-expanded={isUserMenuOpen}
                   style={{
                     background: "transparent",
@@ -308,7 +308,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                     }}
                   >
                     <Link
-                      to="/me"
+                      to='/me'
                       style={{
                         width: "100%",
                         padding: "0.5rem 0.75rem",
@@ -426,115 +426,182 @@ export default function HomeView({ user, onLogout, onLogin }) {
               </button>
             </div>
           )}
-
-          <section style={{ marginTop: "2rem" }}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                gap: 12,
-                marginBottom: 12,
-              }}
-            >
-              <button
-                onClick={() => setActiveTab("latest")}
-                aria-pressed={activeTab === "latest"}
+          {currentUser && (
+            <section style={{ marginTop: "2rem" }}>
+              <div
                 style={{
-                  padding: "0.5rem 0.75rem",
-                  borderRadius: 6,
-                  border:
-                    activeTab === "latest"
-                      ? "2px solid var(--primary)"
-                      : "1px solid transparent",
-                  background:
-                    activeTab === "latest" ? "var(--primary)" : "transparent",
-                  color: activeTab === "latest" ? "#fff" : "var(--text)",
-                  cursor: "pointer",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  gap: 12,
+                  marginBottom: 12,
                 }}
               >
-                Senaste 5
-              </button>
-              <button
-                onClick={() => setActiveTab("all")}
-                aria-pressed={activeTab === "all"}
-                style={{
-                  padding: "0.5rem 0.75rem",
-                  borderRadius: 6,
-                  border:
-                    activeTab === "all"
-                      ? "2px solid var(--primary)"
-                      : "1px solid transparent",
-                  background:
-                    activeTab === "all" ? "var(--primary)" : "transparent",
-                  color: activeTab === "all" ? "#fff" : "var(--text)",
-                  cursor: "pointer",
-                }}
-              >
-                Alla offentliga
-              </button>
-
-              {currentUser && (
                 <button
-                  onClick={() => setActiveTab("mine")}
-                  aria-pressed={activeTab === "mine"}
+                  onClick={() => setActiveTab("latest")}
+                  aria-pressed={activeTab === "latest"}
                   style={{
                     padding: "0.5rem 0.75rem",
                     borderRadius: 6,
                     border:
-                      activeTab === "mine"
+                      activeTab === "latest"
                         ? "2px solid var(--primary)"
                         : "1px solid transparent",
                     background:
-                      activeTab === "mine" ? "var(--primary)" : "transparent",
-                    color: activeTab === "mine" ? "#fff" : "var(--text)",
+                      activeTab === "latest" ? "var(--primary)" : "transparent",
+                    color: activeTab === "latest" ? "#fff" : "var(--text)",
                     cursor: "pointer",
                   }}
                 >
-                  Mina
+                  Senaste 5
                 </button>
-              )}
-              {activeTab === "mine" && currentUser && (
                 <button
-                  onClick={() => setSelectedList(undefined)}
+                  onClick={() => setActiveTab("all")}
+                  aria-pressed={activeTab === "all"}
                   style={{
-                    backgroundColor: "var(--primary)",
-                    color: "#fff",
-                    border: "none",
-                    padding: "0.4rem 0.75rem",
+                    padding: "0.5rem 0.75rem",
                     borderRadius: 6,
+                    border:
+                      activeTab === "all"
+                        ? "2px solid var(--primary)"
+                        : "1px solid transparent",
+                    background:
+                      activeTab === "all" ? "var(--primary)" : "transparent",
+                    color: activeTab === "all" ? "#fff" : "var(--text)",
                     cursor: "pointer",
-                    fontWeight: 600,
                   }}
                 >
-                  + Ny lista
+                  Alla offentliga
                 </button>
-              )}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: "1rem",
-              }}
-            >
-              <h3 style={{ color: "var(--primary)", margin: 0 }}>
-                {activeTab === "latest"
-                  ? "Senaste önskelistor"
-                  : activeTab === "mine"
-                  ? "Mina önskelistor"
-                  : "Alla offentliga önskelistor"}
-              </h3>
-            </div>
-            {activeTab === "mine" ? (
-              loadingUserLists ? (
-                <p>Hämtar dina önskelistor…</p>
-              ) : userListsError ? (
-                <p style={{ color: "var(--error, #c00)" }}>{userListsError}</p>
+
+                {currentUser && (
+                  <button
+                    onClick={() => setActiveTab("mine")}
+                    aria-pressed={activeTab === "mine"}
+                    style={{
+                      padding: "0.5rem 0.75rem",
+                      borderRadius: 6,
+                      border:
+                        activeTab === "mine"
+                          ? "2px solid var(--primary)"
+                          : "1px solid transparent",
+                      background:
+                        activeTab === "mine" ? "var(--primary)" : "transparent",
+                      color: activeTab === "mine" ? "#fff" : "var(--text)",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Mina
+                  </button>
+                )}
+                {activeTab === "mine" && currentUser && (
+                  <button
+                    onClick={() => setSelectedList(undefined)}
+                    style={{
+                      backgroundColor: "var(--primary)",
+                      color: "#fff",
+                      border: "none",
+                      padding: "0.4rem 0.75rem",
+                      borderRadius: 6,
+                      cursor: "pointer",
+                      fontWeight: 600,
+                    }}
+                  >
+                    + Ny lista
+                  </button>
+                )}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: "1rem",
+                }}
+              >
+                <h3 style={{ color: "var(--primary)", margin: 0 }}>
+                  {activeTab === "latest"
+                    ? "Senaste önskelistor"
+                    : activeTab === "mine"
+                    ? "Mina önskelistor"
+                    : "Alla offentliga önskelistor"}
+                </h3>
+              </div>
+              {activeTab === "mine" ? (
+                loadingUserLists ? (
+                  <p>Hämtar dina önskelistor…</p>
+                ) : userListsError ? (
+                  <p style={{ color: "var(--error, #c00)" }}>
+                    {userListsError}
+                  </p>
+                ) : displayedLists.length === 0 ? (
+                  <p style={{ color: "var(--text-light)" }}>
+                    Inga önskelistor hittades.
+                  </p>
+                ) : (
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns:
+                        "repeat(auto-fit, minmax(220px, 1fr))",
+                      gap: "1rem",
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    {displayedLists.map((list) => (
+                      <article
+                        key={list.id}
+                        onClick={() => setSelectedList(list)}
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          background: "var(--background-elevated, #fff)",
+                          borderRadius: 8,
+                          padding: "1rem",
+                          boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <h4
+                          style={{
+                            margin: "0 0 0.5rem 0",
+                            color: "var(--text)",
+                          }}
+                        >
+                          {list.list_title || "Namnlös lista"}
+                        </h4>
+                        <div
+                          style={{
+                            fontSize: "0.9rem",
+                            color: "var(--text-light)",
+                          }}
+                        >
+                          <div>
+                            Ägare:{" "}
+                            {currentUser && currentUser.username
+                              ? currentUser.username
+                              : list.username
+                              ? list.username
+                              : "Inget användarnamn hittades"}
+                          </div>
+                          <div>
+                            Skapad:{" "}
+                            {list.created_at
+                              ? new Date(list.created_at).toLocaleString()
+                              : "—"}
+                          </div>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                )
+              ) : loadingLists ? (
+                <p>Hämtar önskelistor…</p>
+              ) : listsError ? (
+                <p style={{ color: "var(--error, #c00)" }}>{listsError}</p>
               ) : displayedLists.length === 0 ? (
                 <p style={{ color: "var(--text-light)" }}>
-                  Inga önskelistor hittades.
+                  Inga offentliga önskelistor hittades.
                 </p>
               ) : (
                 <div
@@ -572,9 +639,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                       >
                         <div>
                           Ägare:{" "}
-                          {currentUser && currentUser.username
-                            ? currentUser.username
-                            : list.username
+                          {list.username
                             ? list.username
                             : "Inget användarnamn hittades"}
                         </div>
@@ -588,64 +653,9 @@ export default function HomeView({ user, onLogout, onLogin }) {
                     </article>
                   ))}
                 </div>
-              )
-            ) : loadingLists ? (
-              <p>Hämtar önskelistor…</p>
-            ) : listsError ? (
-              <p style={{ color: "var(--error, #c00)" }}>{listsError}</p>
-            ) : displayedLists.length === 0 ? (
-              <p style={{ color: "var(--text-light)" }}>
-                Inga offentliga önskelistor hittades.
-              </p>
-            ) : (
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-                  gap: "1rem",
-                  marginTop: "0.5rem",
-                }}
-              >
-                {displayedLists.map((list) => (
-                  <article
-                    key={list.id}
-                    onClick={() => setSelectedList(list)}
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      background: "var(--background-elevated, #fff)",
-                      borderRadius: 8,
-                      padding: "1rem",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <h4
-                      style={{ margin: "0 0 0.5rem 0", color: "var(--text)" }}
-                    >
-                      {list.list_title || "Namnlös lista"}
-                    </h4>
-                    <div
-                      style={{ fontSize: "0.9rem", color: "var(--text-light)" }}
-                    >
-                      <div>
-                        Ägare:{" "}
-                        {list.username
-                          ? list.username
-                          : "Inget användarnamn hittades"}
-                      </div>
-                      <div>
-                        Skapad:{" "}
-                        {list.created_at
-                          ? new Date(list.created_at).toLocaleString()
-                          : "—"}
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            )}
-          </section>
+              )}
+            </section>
+          )}
         </div>
       </main>
 
