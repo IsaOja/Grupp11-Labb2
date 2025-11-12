@@ -72,7 +72,8 @@ export default function MyPage() {
             <div className="user-section">
               <div className="user-info">
                 <div className="user-name">
-                  {user.firstname} {user.lastname}
+                  {user.username}
+                  {/* {user.firstname} {user.lastname} */}
                 </div>
                 <div className="user-email">{user.email}</div>
               </div>

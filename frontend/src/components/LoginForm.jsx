@@ -10,8 +10,8 @@ export default function LoginForm({
   apiBase = apiBase || `${API_BASE}/api`;
   const [mode, setMode] = useState("login");
   const [username, setUsername] = useState("");
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
+  // const [firstname, setFirstname] = useState("");
+  // const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState(null);
@@ -19,8 +19,8 @@ export default function LoginForm({
 
   const resetForm = () => {
     setUsername("");
-    setFirstname("");
-    setLastname("");
+    // setFirstname("");
+    // setLastname("");
     setEmail("");
     setPassword("");
     setMessage(null);
@@ -40,7 +40,8 @@ export default function LoginForm({
       const endpoint = mode === "register" ? "users" : "users/login";
       const body =
         mode === "register"
-          ? { username, firstname, lastname, email, password }
+          ? //   ? { username, firstname, lastname, email, password }
+            { username, email, password }
           : { username, password };
 
       const res = await fetch(`${apiBase}/${endpoint}`, {
@@ -55,8 +56,8 @@ export default function LoginForm({
         if (mode === "register") {
           setMode("login");
           setUsername("");
-          setFirstname("");
-          setLastname("");
+          // setFirstname("");
+          // setLastname("");
           setEmail("");
           setPassword("");
         } else {
@@ -170,7 +171,7 @@ export default function LoginForm({
 
           {mode === "register" && (
             <>
-              <label>
+              {/* <label>
                 Förnamn
                 <input
                   value={firstname}
@@ -200,7 +201,7 @@ export default function LoginForm({
                     marginBottom: 12,
                   }}
                 />
-              </label>
+              </label> */}
 
               <label>
                 Email
