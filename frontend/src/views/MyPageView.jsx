@@ -8,7 +8,7 @@ const API_BASE = import.meta.env.VITE_API_URL || "";
 import CreateWishlistModal from "../components/CreateWishlistModal.jsx";
 import EditUser from "../components/EditUser.jsx";
 import { Moon, Sun, Plus, Lock, Globe, Edit } from "lucide-react";
-import ManageList from "../components/ManageList.jsx";
+import ListDetails from "../components/ListDetails.jsx";
 
 export default function MyPage() {
   const [user, setUser] = useState(null);
@@ -196,14 +196,15 @@ export default function MyPage() {
                 ))
               )}
               {selectedList && (
-                <ManageList
+                <ListDetails
                   list={selectedList}
+                  isOpen={true}
                   onUpdated={(updated) =>
                     setLists((prev) =>
                       prev.map((l) => (l.id === updated.id ? updated : l))
                     )
                   }
-                  onDelete={(id) =>
+                  onDeleted={(id) =>
                     setLists((prev) => prev.filter((l) => l.id !== id))
                   }
                   onClose={() => setSelectedList(null)}

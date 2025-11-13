@@ -376,10 +376,10 @@ export default function ListDetails({
               Skapa ny lista
             </h2>
             <input
-              type="text"
+              type='text'
               value={newListTitle}
               onChange={(e) => setNewListTitle(e.target.value)}
-              placeholder="Listans namn"
+              placeholder='Listans namn'
               style={{
                 width: "100%",
                 padding: "0.5rem",
@@ -400,7 +400,7 @@ export default function ListDetails({
               }}
             >
               <input
-                type="checkbox"
+                type='checkbox'
                 checked={newListIsPrivate}
                 onChange={(e) => setNewListIsPrivate(e.target.checked)}
               />
@@ -471,10 +471,10 @@ export default function ListDetails({
         ) : isEditing ? (
           <div style={{ marginBottom: "1.5rem" }}>
             <input
-              type="text"
+              type='text'
               value={editTitle}
               onChange={(e) => setEditTitle(e.target.value)}
-              placeholder="Listans namn"
+              placeholder='Listans namn'
               style={{
                 width: "100%",
                 padding: "0.5rem",
@@ -495,7 +495,7 @@ export default function ListDetails({
               }}
             >
               <input
-                type="checkbox"
+                type='checkbox'
                 checked={editIsPrivate}
                 onChange={(e) => setEditIsPrivate(e.target.checked)}
               />
@@ -586,19 +586,19 @@ export default function ListDetails({
                   }}
                 >
                   <input
-                    placeholder="Namn på föremål"
+                    placeholder='Namn på föremål'
                     value={newItemTitle}
                     onChange={(e) => setNewItemTitle(e.target.value)}
                     style={{ flex: 2, padding: "0.4rem" }}
                   />
                   <input
-                    placeholder="Pris"
+                    placeholder='Pris'
                     value={newItemPrice}
                     onChange={(e) => setNewItemPrice(e.target.value)}
                     style={{ flex: 1, padding: "0.4rem" }}
                   />
                   <input
-                    placeholder="Produktlänk"
+                    placeholder='Produktlänk'
                     value={newItemLink}
                     onChange={(e) => setNewItemLink(e.target.value)}
                     style={{ flex: 2, padding: "0.4rem" }}
@@ -665,13 +665,13 @@ export default function ListDetails({
                           <input
                             value={editItemPrice}
                             onChange={(e) => setEditItemPrice(e.target.value)}
-                            placeholder="Pris"
+                            placeholder='Pris'
                             style={{ padding: "0.4rem" }}
                           />
                           <input
                             value={editItemLink}
                             onChange={(e) => setEditItemLink(e.target.value)}
-                            placeholder="Produktlänk"
+                            placeholder='Produktlänk'
                             style={{ padding: "0.4rem", flex: 1 }}
                           />
                         </div>
@@ -737,8 +737,8 @@ export default function ListDetails({
                         {item.product_link && (
                           <a
                             href={item.product_link}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            target='_blank'
+                            rel='noopener noreferrer'
                             style={{
                               color: "var(--primary)",
                               textDecoration: "none",
