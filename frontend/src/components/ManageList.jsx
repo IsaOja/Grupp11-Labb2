@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+// Den här komponenten används inte längre i MyPage. komponenten har ersätts av ListDetails.
 
+import { useState, useEffect } from "react";
 export default function ManageList({ list, onUpdated, onClose, onDelete }) {
   const [title, setTitle] = useState(list.list_title);
   const [items, setItems] = useState([]);
   const [newItemTitle, setNewItemTitle] = useState("");
   const [newItemPrice, setNewItemPrice] = useState("");
   const [newItemLink, setNewItemLink] = useState("");
+  const [isPrivate, setIsPrivate] = useState(list.is_private);
 
   const token = localStorage.getItem("authToken");
   useEffect(() => {
@@ -29,7 +31,7 @@ export default function ManageList({ list, onUpdated, onClose, onDelete }) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ list_title: title }),
+      body: JSON.stringify({ list_title: title, is_private: isPrivate }),
     });
     const updated = await res.json();
     onUpdated(updated);
@@ -133,9 +135,23 @@ export default function ManageList({ list, onUpdated, onClose, onDelete }) {
             border: "none",
           }}
         >
-          Spara namn
+          Spara ändringar
         </button>
-
+        <label
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            marginBottom: 12,
+          }}
+        >
+          <input
+            type='checkbox'
+            checked={isPrivate}
+            onChange={(e) => setIsPrivate(e.target.checked)}
+          />
+          Privat
+        </label>
         <h3>Items</h3>
 
         {items.length === 0 ? (
