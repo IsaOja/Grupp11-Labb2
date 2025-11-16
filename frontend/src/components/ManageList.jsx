@@ -12,12 +12,9 @@ export default function ManageList({ list, onUpdated, onClose, onDelete }) {
   const token = localStorage.getItem("authToken");
   useEffect(() => {
     async function loadItems() {
-      const res = await fetch(
-        `http://localhost:3000/api/wishlist-items/wishlist/${list.id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await fetch(`/api/wishlist-items/wishlist/${list.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const data = await res.json();
       setItems(data || []);
     }
@@ -25,7 +22,7 @@ export default function ManageList({ list, onUpdated, onClose, onDelete }) {
   }, [list.id, token]);
 
   async function saveListTitle() {
-    const res = await fetch(`http://localhost:3000/api/wishlists/${list.id}`, {
+    const res = await fetch(`/api/wishlists/${list.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -46,17 +43,14 @@ export default function ManageList({ list, onUpdated, onClose, onDelete }) {
     };
 
     try {
-      const res = await fetch(
-        `http://localhost:3000/api/wishlist-items/${list.id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(body),
-        }
-      );
+      const res = await fetch(`/api/wishlist-items/${list.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
 
       const createdItem = await res.json();
       setItems((prev) => [...prev, createdItem]);
@@ -70,7 +64,7 @@ export default function ManageList({ list, onUpdated, onClose, onDelete }) {
   }
 
   async function removeItem(id) {
-    await fetch(`http://localhost:3000/api/wishlist-items/${id}`, {
+    await fetch(`/api/wishlist-items/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -78,7 +72,7 @@ export default function ManageList({ list, onUpdated, onClose, onDelete }) {
   }
 
   async function deleteList() {
-    await fetch(`http://localhost:3000/api/wishlists/${list.id}`, {
+    await fetch(`/api/wishlists/${list.id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });

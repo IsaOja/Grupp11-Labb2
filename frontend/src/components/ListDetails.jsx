@@ -36,20 +36,17 @@ export default function ListDetails({
     setSaving(true);
     try {
       const token = localStorage.getItem("authToken");
-      const res = await fetch(
-        `http://localhost:3000/api/wishlists/${list.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            list_title: editTitle,
-            is_private: editIsPrivate,
-          }),
-        }
-      );
+      const res = await fetch(`/api/wishlists/${list.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          list_title: editTitle,
+          is_private: editIsPrivate,
+        }),
+      });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
@@ -67,15 +64,12 @@ export default function ListDetails({
   const handleDeleteItem = async (itemId) => {
     try {
       const token = localStorage.getItem("authToken");
-      const res = await fetch(
-        `http://localhost:3000/api/wishlist-items/${itemId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`/api/wishlist-items/${itemId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setItems(items.filter((item) => item.id !== itemId));
@@ -90,21 +84,18 @@ export default function ListDetails({
     setError(null);
     try {
       const token = localStorage.getItem("authToken");
-      const res = await fetch(
-        `http://localhost:3000/api/wishlist-items/${list.id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            item_title: newItemTitle,
-            price: newItemPrice || null,
-            product_link: newItemLink || null,
-          }),
-        }
-      );
+      const res = await fetch(`/api/wishlist-items/${list.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          item_title: newItemTitle,
+          price: newItemPrice || null,
+          product_link: newItemLink || null,
+        }),
+      });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const created = await res.json();
@@ -135,21 +126,18 @@ export default function ListDetails({
   const handleUpdateItem = async (itemId) => {
     try {
       const token = localStorage.getItem("authToken");
-      const res = await fetch(
-        `http://localhost:3000/api/wishlist-items/${itemId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            item_title: editItemTitle,
-            price: editItemPrice || null,
-            product_link: editItemLink || null,
-          }),
-        }
-      );
+      const res = await fetch(`/api/wishlist-items/${itemId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          item_title: editItemTitle,
+          price: editItemPrice || null,
+          product_link: editItemLink || null,
+        }),
+      });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const updated = await res.json();
@@ -181,17 +169,14 @@ export default function ListDetails({
       setError(null);
       try {
         const token = localStorage.getItem("authToken");
-        const res = await fetch(
-          `http://localhost:3000/api/wishlist-items/wishlist/${list.id}`,
-          {
-            headers: token
-              ? {
-                  Authorization: `Bearer ${token}`,
-                  "Content-Type": "application/json",
-                }
-              : { "Content-Type": "application/json" },
-          }
-        );
+        const res = await fetch(`/api/wishlist-items/wishlist/${list.id}`, {
+          headers: token
+            ? {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              }
+            : { "Content-Type": "application/json" },
+        });
 
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
@@ -218,12 +203,9 @@ export default function ListDetails({
       const token = localStorage.getItem("authToken");
       if (!token) return;
       try {
-        const res = await fetch(
-          `http://localhost:3000/api/users/${list.user_id}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await fetch(`/api/users/${list.user_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const user = await res.json();
         if (!mounted) return;
@@ -322,15 +304,10 @@ export default function ListDetails({
                 setDeletingList(true);
                 try {
                   const token = localStorage.getItem("authToken");
-                  const res = await fetch(
-                    `http://localhost:3000/api/wishlists/${list.id}`,
-                    {
-                      method: "DELETE",
-                      headers: token
-                        ? { Authorization: `Bearer ${token}` }
-                        : {},
-                    }
-                  );
+                  const res = await fetch(`/api/wishlists/${list.id}`, {
+                    method: "DELETE",
+                    headers: token ? { Authorization: `Bearer ${token}` } : {},
+                  });
                   if (!res.ok) throw new Error(`HTTP ${res.status}`);
                   if (onDeleted) onDeleted(list.id);
                   onClose();
@@ -417,7 +394,7 @@ export default function ListDetails({
                   try {
                     const token = localStorage.getItem("authToken");
                     const res = await fetch(
-                      `http://localhost:3000/api/wishlists/${currentUser.id}`,
+                      `/api/wishlists/${currentUser.id}`,
                       {
                         method: "POST",
                         headers: {

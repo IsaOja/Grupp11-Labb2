@@ -61,7 +61,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
       setLoadingLists(true);
       setListsError(null);
       try {
-        const res = await fetch("http://localhost:3000/api/wishlists/public");
+        const res = await fetch("/api/wishlists/public");
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         setWishlists(data || []);
@@ -82,17 +82,14 @@ export default function HomeView({ user, onLogout, onLogin }) {
       setUserListsError(null);
       try {
         const token = localStorage.getItem("authToken");
-        const res = await fetch(
-          `http://localhost:3000/api/wishlists/user/${userId}`,
-          {
-            headers: token
-              ? {
-                  Authorization: `Bearer ${token}`,
-                  "Content-Type": "application/json",
-                }
-              : { "Content-Type": "application/json" },
-          }
-        );
+        const res = await fetch(`/api/wishlists/user/${userId}`, {
+          headers: token
+            ? {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              }
+            : { "Content-Type": "application/json" },
+        });
 
         if (res.status === 401 || res.status === 403) {
           try {

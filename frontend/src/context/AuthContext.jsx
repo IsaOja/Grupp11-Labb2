@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
       const token = localStorage.getItem("authToken");
       if (!token) return;
       try {
-        const res = await fetch("http://localhost:3000/api/users/me", {
+        const res = await fetch("/api/users/me", {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
