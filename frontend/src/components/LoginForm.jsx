@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function LoginForm({
-  apiBase = "http://localhost:3000/api",
+  apiBase = "/api",
   onLogin,
   isOpen = false,
   onClose,

@@ -9,7 +9,7 @@ export default function CreateWishlistModal({ user, onClose, onCreated }) {
     const token = localStorage.getItem("authToken");
     if (!token || !user) return;
 
-    const res = await fetch(`http://localhost:3000/api/wishlists/${user.id}`, {
+    const res = await fetch(`/api/wishlists/${user.id}`, {
       method: "POST",
       headers: {
         "content-Type": "application/json",

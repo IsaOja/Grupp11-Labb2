@@ -26,7 +26,7 @@ export default function MyPage() {
     if (!token) return;
 
     async function getExistingUser() {
-      const res = await fetch("http://localhost:3000/api/users/me", {
+      const res = await fetch("/api/users/me", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -40,9 +40,7 @@ export default function MyPage() {
     if (!user) return;
 
     async function getLists() {
-      const res = await fetch(
-        `http://localhost:3000/api/wishlists/user/${user.id}`
-      );
+      const res = await fetch(`/api/wishlists/user/${user.id}`);
       const data = await res.json();
       setLists(data);
     }
