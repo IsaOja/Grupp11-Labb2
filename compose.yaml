@@ -29,4 +29,7 @@ services:
       interval: 1s
       test: "pg_isready --username=postgres"
     volumes:
-      - ./data:/var/lib/postgresql
+      - pgdata:/var/lib/postgresql
+
+volumes:
+  pgdata:
