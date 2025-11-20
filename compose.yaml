@@ -11,15 +11,15 @@ services:
     ports:
       - "3000:3000"
 
-  frontend:
-    build: frontend
-    depends_on:
-      - backend
-    ports:
-      - "5173:80"
-    environment:
-      - VITE_HOST=0.0.0.0
-      - VITE_API_PROXY=http://backend:3000
+  # frontend:
+  #   build: frontend
+  #   depends_on:
+  #     - backend
+  #   ports:
+  #     - "5173:80"
+  #   environment:
+  #     - VITE_HOST=0.0.0.0
+  #     - VITE_API_PROXY=http://backend:3000
 
   database:
     image: postgres
@@ -33,6 +33,15 @@ services:
       test: "pg_isready --username=postgres"
     volumes:
       - pgdata:/var/lib/postgresql
+
+  proxy:
+    build:
+      context: .
+      dockerfile: ./frontend/proxy-nginx/Dockerfile
+    ports:
+      - 5173:80
+    depends_on:
+      - backend
 
 volumes:
   pgdata:
