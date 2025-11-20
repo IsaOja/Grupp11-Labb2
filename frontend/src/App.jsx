@@ -4,6 +4,7 @@ import { ThemeProvider } from "./context/ThemContext.jsx";
 import "./styles/themes.css";
 import "./App.css";
 import { useAuth } from "./context/useAuth.jsx";
+import { Suspense } from "react";
 
 function App() {
   const { user, login, logout } = useAuth();
@@ -11,7 +12,9 @@ function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
-        <Router user={user} onLogout={logout} onLogin={login} />
+        <Suspense fallback={<h3>Laddar...</h3>}>
+          <Router user={user} onLogout={logout} onLogin={login} />
+        </Suspense>
       </BrowserRouter>
     </ThemeProvider>
   );

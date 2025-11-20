@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
+import { PrivacyPolicyScreen } from "../router/Router";
 export default function LoginForm({
   apiBase = "/api",
   onLogin,
@@ -246,7 +246,13 @@ export default function LoginForm({
               <p>
                 Vi sparar ditt användarnamn och din e-postadress för att kunna
                 hantera ditt konto och dina önskelistor. läs vår{" "}
-                <Link to='/policy'>integritetspolicy</Link> för mer information
+                <Link
+                  onMouseOver={() => PrivacyPolicyScreen.preload()}
+                  to='/policy'
+                >
+                  integritetspolicy
+                </Link>{" "}
+                för mer information
               </p>
               <input
                 type='checkbox'

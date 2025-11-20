@@ -8,6 +8,7 @@ import { useTheme } from "../context/ThemContext.jsx";
 import ListDetails from "../components/ListDetails.jsx";
 import "../App.css";
 import "../styles/themes.css";
+import { MyPageScreen } from "../router/Router.jsx";
 
 export default function HomeView({ user, onLogout, onLogin }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -305,6 +306,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                     }}
                   >
                     <Link
+                      onMouseOver={() => MyPageScreen.preload()}
                       to='/me'
                       style={{
                         width: "100%",

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/useAuth.jsx";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { HomeScreen } from "../router/Router.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "";
 import CreateWishlistModal from "../components/CreateWishlistModal.jsx";
@@ -68,6 +69,7 @@ export default function MyPage() {
               <span>{theme === "dark" ? "Light" : "Dark"}</span>
             </button>
             <Link
+              onMouseOver={() => HomeScreen.preload()}
               to={"/"}
               className='btn-primary'
               style={{ textDecoration: "none" }}
