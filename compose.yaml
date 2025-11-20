@@ -22,17 +22,17 @@ services:
   #     - VITE_API_PROXY=http://backend:3000
 
   database:
-    image: postgres
-    environment:
-      - POSTGRES_PASSWORD=secret
-      - POSTGRES_USER=postgres
-    ports:
-      - "5432:5432"
-    healthcheck:
-      interval: 1s
-      test: "pg_isready --username=postgres"
+    image: postgres:latest
+    env_file:
+      - ./backend/.env
     volumes:
-      - pgdata:/var/lib/postgresql
+      - ./pgdata:/var/lib/postgresql
+      - ./dataBase.sql:/docker-entrypoint-initdb.d/dataBase.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1s
+      timeout: 2s
+      retries: 5
 
   proxy:
     build:
