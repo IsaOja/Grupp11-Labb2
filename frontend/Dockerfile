@@ -1,4 +1,4 @@
-FROM node:18-alpine as builder
+FROM nginx:mainline-alpine AS builder
 
 WORKDIR /app
 COPY package*.json ./

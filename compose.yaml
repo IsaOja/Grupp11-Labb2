@@ -32,7 +32,7 @@ services:
       interval: 1s
       test: "pg_isready --username=postgres"
     volumes:
-      - pgdata:/var/lib/postgresql
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
   pgdata:
