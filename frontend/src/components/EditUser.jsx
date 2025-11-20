@@ -195,11 +195,11 @@ export default function EditUser({ isOpen, onClose, onUpdated, onDeleted }) {
               Användarnamn
             </span>
             <input
-              type="text"
+              type='text'
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Användarnamn"
-              autoComplete="username"
+              placeholder='Användarnamn'
+              autoComplete='username'
               required
               style={{
                 width: "100%",
@@ -219,11 +219,11 @@ export default function EditUser({ isOpen, onClose, onUpdated, onDeleted }) {
               E-post
             </span>
             <input
-              type="email"
+              type='email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="E-post"
-              autoComplete="email"
+              placeholder='E-post'
+              autoComplete='email'
               required
               style={{
                 width: "100%",
@@ -243,11 +243,11 @@ export default function EditUser({ isOpen, onClose, onUpdated, onDeleted }) {
               Nytt lösenord (lämna tomt för att inte ändra)
             </span>
             <input
-              type="password"
+              type='password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Nytt lösenord"
-              autoComplete="new-password"
+              placeholder='Nytt lösenord'
+              autoComplete='new-password'
               style={{
                 width: "100%",
                 padding: "0.5rem",
@@ -277,7 +277,7 @@ export default function EditUser({ isOpen, onClose, onUpdated, onDeleted }) {
 
           <div style={{ display: "flex", gap: "1rem" }}>
             <button
-              type="submit"
+              type='submit'
               disabled={saving}
               style={{
                 flex: 1,
@@ -293,7 +293,7 @@ export default function EditUser({ isOpen, onClose, onUpdated, onDeleted }) {
               {saving ? "Sparar..." : "Spara ändringar"}
             </button>
             <button
-              type="button"
+              type='button'
               onClick={onClose}
               style={{
                 flex: 1,
@@ -316,7 +316,7 @@ export default function EditUser({ isOpen, onClose, onUpdated, onDeleted }) {
             }}
           >
             <button
-              type="button"
+              type='button'
               onClick={handleDelete}
               disabled={deleting}
               style={{

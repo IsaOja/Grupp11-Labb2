@@ -8,6 +8,7 @@ import { useTheme } from "../context/ThemContext.jsx";
 import ListDetails from "../components/ListDetails.jsx";
 import "../App.css";
 import "../styles/themes.css";
+import { MyPageScreen } from "../router/Router.jsx";
 
 export default function HomeView({ user, onLogout, onLogin }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -208,7 +209,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
 
   return (
     <div
-      className='theme-transition'
+      className="theme-transition"
       style={{
         backgroundColor: "var(--background)",
         position: "fixed",
@@ -273,7 +274,7 @@ export default function HomeView({ user, onLogout, onLogin }) {
                 <button
                   ref={userButtonRef}
                   onClick={() => setIsUserMenuOpen((s) => !s)}
-                  aria-haspopup='true'
+                  aria-haspopup="true"
                   aria-expanded={isUserMenuOpen}
                   style={{
                     background: "transparent",
@@ -305,7 +306,8 @@ export default function HomeView({ user, onLogout, onLogin }) {
                     }}
                   >
                     <Link
-                      to='/me'
+                      onMouseOver={() => MyPageScreen.preload()}
+                      to="/me"
                       style={{
                         width: "100%",
                         padding: "0.5rem 0.75rem",

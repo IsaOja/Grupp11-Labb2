@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
+import { PrivacyPolicyScreen } from "../router/Router";
 export default function LoginForm({
   apiBase,
   onLogin,
@@ -160,7 +160,7 @@ export default function LoginForm({
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              type='text'
+              type="text"
               autoComplete={mode === "login" ? "username email" : "username"}
               style={{
                 width: "100%",
@@ -208,11 +208,11 @@ export default function LoginForm({
               <label>
                 Email
                 <input
-                  type='email'
+                  type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  autoComplete='email'
+                  autoComplete="email"
                   style={{
                     width: "100%",
                     padding: 8,
@@ -227,7 +227,7 @@ export default function LoginForm({
           <label>
             Lösenord
             <input
-              type='password'
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -248,10 +248,16 @@ export default function LoginForm({
               <p>
                 Vi sparar ditt användarnamn och din e-postadress för att kunna
                 hantera ditt konto och dina önskelistor. läs vår{" "}
-                <Link to='/policy'>integritetspolicy</Link> för mer information
+                <Link
+                  onMouseOver={() => PrivacyPolicyScreen.preload()}
+                  to="/policy"
+                >
+                  integritetspolicy
+                </Link>{" "}
+                för mer information
               </p>
               <input
-                type='checkbox'
+                type="checkbox"
                 checked={policyAgree}
                 onChange={() => setPolicyAgree(!policyAgree)}
                 style={{ marginBottom: "1rem" }}
@@ -261,7 +267,7 @@ export default function LoginForm({
           )}
 
           <button
-            type='submit'
+            type="submit"
             disabled={loading || (mode === "register" && !policyAgree)}
             style={{ width: "100%", padding: 10, justifyContent: "center" }}
           >

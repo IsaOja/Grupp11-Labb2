@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/useAuth.jsx";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { HomeScreen } from "../router/Router.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "";
 import CreateWishlistModal from "../components/CreateWishlistModal.jsx";
@@ -58,18 +59,19 @@ export default function MyPage() {
       ? publicLists
       : lists;
   return (
-    <div className='page-container'>
-      <div className='container'>
-        <header className='header'>
+    <div className="page-container">
+      <div className="container">
+        <header className="header">
           <h1>My Wishlists</h1>
-          <div className='header-actions'>
-            <button className='theme-toggle' onClick={toggleTheme}>
+          <div className="header-actions">
+            <button className="theme-toggle" onClick={toggleTheme}>
               {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
               <span>{theme === "dark" ? "Light" : "Dark"}</span>
             </button>
             <Link
+              onMouseOver={() => HomeScreen.preload()}
               to={"/"}
-              className='btn-primary'
+              className="btn-primary"
               style={{ textDecoration: "none" }}
             >
               Home
@@ -79,22 +81,22 @@ export default function MyPage() {
 
         {user ? (
           <>
-            <div className='user-section'>
-              <div className='user-info'>
-                <div className='user-name'>
+            <div className="user-section">
+              <div className="user-info">
+                <div className="user-name">
                   {user.username}
                   {/* {user.firstname} {user.lastname} */}
                 </div>
-                <div className='user-email'>{user.email}</div>
+                <div className="user-email">{user.email}</div>
               </div>
               <button
-                className='btn-primary'
+                className="btn-primary"
                 onClick={() => setShowEditProfile(true)}
               >
                 <Edit size={20} /> Edit Profile
               </button>
               <button
-                className='btn-primary'
+                className="btn-primary"
                 onClick={() => setShowCreate(true)}
               >
                 <Plus size={20} />
@@ -126,9 +128,9 @@ export default function MyPage() {
               />
             )}
 
-            <div className='filter-section'>
-              <span className='filter-label'>Filter lists</span>
-              <div className='filter-buttons'>
+            <div className="filter-section">
+              <span className="filter-label">Filter lists</span>
+              <div className="filter-buttons">
                 <button
                   className={`filter-btn ${filter === "all" ? "active" : ""}`}
                   onClick={() => setFilter("all")}
@@ -154,23 +156,23 @@ export default function MyPage() {
               </div>
             </div>
 
-            <h2 className='lists-header'>Your Lists</h2>
+            <h2 className="lists-header">Your Lists</h2>
 
-            <div className='list-grid'>
+            <div className="list-grid">
               {filteredLists.length === 0 ? (
-                <div className='empty-state'>
-                  <div className='empty-state-icon'>📋</div>
+                <div className="empty-state">
+                  <div className="empty-state-icon">📋</div>
                   <p>No lists found</p>
                 </div>
               ) : (
                 filteredLists.map((l) => (
                   <div
-                    className='list-card'
+                    className="list-card"
                     key={l.id}
                     onClick={() => setSelectedList(l)}
                   >
-                    <div className='list-card-header'>
-                      <h4 className='list-title'>{l.list_title}</h4>
+                    <div className="list-card-header">
+                      <h4 className="list-title">{l.list_title}</h4>
                       <p>
                         Created: {new Date(l.created_at).toLocaleDateString()}
                       </p>
@@ -211,7 +213,7 @@ export default function MyPage() {
             </div>
           </>
         ) : (
-          <div className='empty-state'>
+          <div className="empty-state">
             <h3 style={{ color: "var(--error)" }}>You need to log in</h3>
           </div>
         )}
