@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "seed": "node seed.js",
-    "build": "esbuild index.js --bundle --platform=node --outfile=dist/index.js",
+    "build": "esbuild index.js --bundle --platform=node --outfile=dist/index.js --external:bcrypt --external:pg --external:jsonwebtoken",
     "build-frontend": "npm run --prefix ../frontend build && rm -Rf dist && mv ../frontend/dist .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
