@@ -11,15 +11,15 @@ services:
     ports:
       - "3000:3000"
 
-  # frontend:
-  #   build: frontend
-  #   depends_on:
-  #     - backend
-  #   ports:
-  #     - "5173:80"
-  #   environment:
-  #     - VITE_HOST=0.0.0.0
-  #     - VITE_API_PROXY=http://backend:3000
+  frontend:
+    build: frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_HOST=0.0.0.0
+      - VITE_API_PROXY=http://backend:3000
 
   database:
     image: postgres
@@ -29,21 +29,13 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql
+      - pgdata:/var/lib/postgresql/data
       - ./dataBase.sql:/docker-entrypoint-initdb.d/dataBase.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 1s
       timeout: 2s
       retries: 5
-  proxy:
-    build:
-      context: .
-      dockerfile: ./frontend/proxy-nginx/Dockerfile
-    ports:
-      - 5173:80
-    depends_on:
-      - backend
 
 volumes:
   pgdata:
