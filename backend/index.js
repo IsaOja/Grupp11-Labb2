@@ -16,7 +16,7 @@ app.use("/api/wishlists", wishlistRoutes);
 app.use("/api/wishlist-items", itemRoutes);
 
 ensureTables().then(() => {
-  const port = process.env.PORT || 8080;
+  const port = process.env.PORT || 3000;
   app.listen(port, () =>
     console.log(`✅ Server running on http://localhost:${port}`)
   );
