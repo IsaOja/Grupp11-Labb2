@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "seed": "node seed.js",
+    "build": "esbuild index.js --bundle --platform=node --outfile=dist/index.js",
     "build-frontend": "npm run --prefix ../frontend build && rm -Rf dist && mv ../frontend/dist .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,5 +22,8 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.3"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "esbuild": "^0.27.0"
+  }
 }
