@@ -21,7 +21,8 @@ services:
   database:
     image: postgres
     environment:
-      - DB_PASSWORD=secret
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=postgres
     ports:
       - "5432:5432"
     healthcheck:
