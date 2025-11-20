@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PrivacyPolicyScreen } from "../router/Router";
 export default function LoginForm({
-  apiBase,
+  apiBase = "/api",
   onLogin,
   isOpen = false,
   onClose,
