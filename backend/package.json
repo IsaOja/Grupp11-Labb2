@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "seed": "node seed.js",
-    "build-frontend": "npm run --prefix ../frontend build && rm -Rf dist && mv ../frontend/dist .",
+    "build": "esbuild index.js --bundle --platform=node --format=esm --outfile=dist/index.js --external:bcrypt --external:express --external:dotenv --external:pg --external:cors --external:jsonwebtoken",
+    "move-frontend": "rm -Rf dist && mv ./frontend/dist .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,10 +17,12 @@
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
-    "express": "^5.1.0",
-    "frontend": "file:../frontend",
+    "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.3"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "esbuild": "^0.27.0"
+  }
 }
