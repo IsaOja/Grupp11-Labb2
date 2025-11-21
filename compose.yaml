@@ -24,12 +24,13 @@ services:
     ports:
       - "3000:3000"
 
-  proxy:
-    build:
-      context: .
-      dockerfile: ./frontend/proxy-nginx/Dockerfile
+  frontend:
+    build: frontend
     ports:
-      - "5173:80"
+      - "5173:5173"
+    environment:
+      - VITE_HOST=0.0.0.0
+      - VITE_API_PROXY=http://backend:3000
     depends_on:
       - backend
 

@@ -1,9 +1,7 @@
-FROM node:18-alpine AS builder
-
+FROM node:lts-alpine
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
-FROM nginx:mainline-alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
+EXPOSE 5173
+CMD ["npm", "run", "build"]
