@@ -1,4 +1,4 @@
-# Steg 1: Bygg frontend
+# Steg 1
 FROM node:lts-alpine AS frontend-builder
 WORKDIR /app
 COPY ../frontend/package*.json ./
@@ -6,6 +6,8 @@ RUN npm install
 COPY ../frontend/ .
 RUN npm run build
 
+# Steg 2
+FROM node:lts-alpine AS backend-builder
 WORKDIR /app
 RUN apk add --no-cache build-base
 COPY package*.json ./
@@ -13,6 +15,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 
+# Steg 3
 FROM node:lts-alpine
 WORKDIR /app
 COPY package*.json ./

@@ -16,7 +16,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/wishlists", wishlistRoutes);
 app.use("/api/wishlist-items", itemRoutes);
 
-// Servera de statiska filerna från frontend-bygget
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "dist", "public")));
 app.get("*", (req, res) => {
