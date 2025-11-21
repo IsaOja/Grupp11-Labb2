@@ -7,8 +7,7 @@ import { ensureTables } from "./db.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-const express = require("express"),
-  path = require("path");
+path = require("path");
 
 const app = express();
 app.use(cors());
