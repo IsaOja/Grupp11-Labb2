@@ -5,9 +5,8 @@ import wishlistRoutes from "./src/routes/wishlistRoutes.js";
 import itemRoutes from "./src/routes/itemRoutes.js";
 import { ensureTables } from "./db.js";
 import dotenv from "dotenv";
+import path from "path";
 dotenv.config();
-
-path = require("path");
 
 const app = express();
 app.use(cors());
@@ -17,7 +16,12 @@ app.use("/api/users", userRoutes);
 app.use("/api/wishlists", wishlistRoutes);
 app.use("/api/wishlist-items", itemRoutes);
 
-app.use(express.static(path.join(path.resolve(), "dist")));
+// Servera de statiska filerna från frontend-bygget
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "dist", "public")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "public", "index.html"));
+});
 
 ensureTables().then(() => {
   const port = process.env.PORT || 3000;
