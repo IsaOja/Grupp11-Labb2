@@ -14,5 +14,19 @@ export default defineConfig(({ mode }) => {
       },
       allowedHosts: ["labb2.ebros.se", "localhost", "127.0.0.1"],
     },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes("node_modules")) {
+              return "vendor";
+            }
+          },
+          entryFileNames: `assets/[name].js`,
+          chunkFileNames: `assets/[name].js`,
+          assetFileNames: `assets/[name].[ext]`,
+        },
+      },
+    },
   };
 });
